@@ -1,23 +1,33 @@
 #puts 'hello world'
 
-if ARGV.count < 1
-    puts "Артём" 
-end
+# if ARGV.count < 1
+#     puts "Артём" 
+# end
   
-user = ARGV[0]
-puts "hello #{user}"
-puts "Какой твой любимый язык програмирования?"
-lang = STDIN.gets.chomp.downcase #руби вызовет этот метод у объекта стандартного ввода и будет совершенно точно
-                                    # читать именно из консоли, не отвлекаясь на ARGV.
+# user = ARGV[0]
+# puts "hello #{user}"
+# puts "Какой твой любимый язык програмирования?"
+# lang = STDIN.gets.chomp.downcase #руби вызовет этот метод у объекта стандартного ввода и будет совершенно точно
+#                                     # читать именно из консоли, не отвлекаясь на ARGV.
 
-case lang
-when "ruby"
-    puts "кринж"
-when "#"
-    puts "уверено"
-when "python"
-    puts "Рома"
-when "dart"
-    puts "Серега"
-else puts "больше языков нет"
-end
+# case lang
+# when "ruby"
+#     puts "кринж"
+# when "#"
+#     puts "уверено"
+# when "python"
+#     puts "Рома"
+# when "dart"
+#     puts "Серега"
+# else puts "больше языков нет"
+# end
+
+require 'open3'
+
+puts "Введите команду для выполнения её OC:"
+cmd = gets.chomp()
+system(cmd)
+
+puts "Теперь введите код на Ruby:"
+rubyCmd = gets.chomp()
+system " ruby -e \'#{rubyCmd}\'"
