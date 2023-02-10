@@ -119,14 +119,20 @@ end
 
 #1.8 дан целочисленный массив. Необходимо найти индексы двух наименьших элементов массива.
 
-def indexMin(arr)
-    #val1= minArr(arr)
-    indx1=arr.index(minArr(arr))
-    arr.fill(indx1,indx1) {|index| 10000}
-    #arr.delete(indx1)
-    #val2= minArr(arr)
-    indx2=arr.index(minArr(arr))
-    return indx1,indx2
-end
+# def indexMin(arr)
+#     #val1= minArr(arr)
+#     indx1=arr.index(minArr(arr))
+#     arr.fill(indx1,indx1) {|index| 10000}
+#     #arr.delete(indx1)
+#     #val2= minArr(arr)
+#     indx2=arr.index(minArr(arr))
+#     return indx1,indx2
+# end
 
-puts(indexMin([1,2,3,-3,-5]))
+# puts(indexMin([1,2,3,-3,-5]))
+
+#1.20 Дан целочисленный массив. Необходимо найти все пропущенные числа.
+def findmiss(arr)
+    (arr.min..arr.max).to_a - arr
+end
+puts(findmiss([1,2,5,6,9]))
