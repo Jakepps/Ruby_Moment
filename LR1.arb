@@ -37,20 +37,33 @@
 #Метод 3 Найти делитель числа, являющийся взаимно простым с
 #наибольшим количеством цифр данного числа.
 
-def nod(a, b) 
-    if (b == 0) then a
-    else nod(b, a % b)
-    end
+# def nod(a, b) 
+#     if (b == 0) then a
+#     else nod(b, a % b)
+#     end
+# end
+
+# def simple(a, b) 
+#     1 == nod(a, b)
+# end
+
+# def euler(n, m = n, acc = 1) #функция Эйлера
+#     if m == 1 then acc
+#     else euler(n, m-1, (simple(n, m) ? 1:0 ) + acc)
+#     end
+# end
+
+# puts(euler(10))
+
+def sum(num)
+    rez= 0
+    num.digits.each { 
+        #|dig| 
+        if dig % 3 == 0
+            res += dig 
+        end
+    }
+    return rez
 end
 
-def simple(a, b) 
-    1 == nod(a, b)
-end
-
-def euler(n, m = n, acc = 1) #функция Эйлера
-    if m == 1 then acc
-    else euler(n, m-1, (simple(n, m) ? 1:0 ) + acc)
-    end
-end
-
-puts(euler(10))
+puts(sum(391))
