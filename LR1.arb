@@ -37,15 +37,15 @@
 #Метод 3 Найти делитель числа, являющийся взаимно простым с
 #наибольшим количеством цифр данного числа.
 
-# def nod(a, b) 
-#     if (b == 0) then a
-#     else nod(b, a % b)
-#     end
-# end
+def nod(a, b) 
+    if (b == 0) then a
+    else nod(b, a % b)
+    end
+end
 
-# def simple(a, b) 
-#     1 == nod(a, b)
-# end
+def simple(a, b) 
+    1 == nod(a, b)
+end
 
 # def euler(n, m = n, acc = 1) #функция Эйлера
 #     if m == 1 then acc
@@ -55,15 +55,32 @@
 
 # puts(euler(10))
 
-def sum(num)
-    rez= 0
-    num.digits.each { 
-        #|dig| 
-        if dig % 3 == 0
-            res += dig 
-        end
-    }
-    return rez
+# def sum(num)
+#     rez= 0
+#     num.digits.each { 
+#         |dig| 
+#         if dig % 3 == 0
+#             res += dig 
+#         end
+#     }
+#     return rez
+# end
+
+
+def otv(n)
+    divisors = (2...n).select{|numbers| n%numbers == 0}
+    count=0
+    array=[]
+    for i in divisors do
+        n.digits.each { 
+                    |dig| 
+                    if simple(i,dig)
+                        count+=1
+                    end
+                }
+        array<<count       
+    end
+    return array.max
 end
 
-puts(sum(391))
+puts(otv(123))
