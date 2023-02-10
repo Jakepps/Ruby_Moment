@@ -7,7 +7,7 @@
 # user = ARGV[0]
 # puts "hello #{user}"
 # puts "Какой твой любимый язык програмирования?"
-# lang = STDIN.gets.chomp.downcase #руби вызовет этот метод у объекта стандартного ввода и будет совершенно точно
+# lang = STDIN.gets.chomp.downcase #руби вызовет этот метод у объекта стандартного ввода и будет точно
 #                                     # читать именно из консоли, не отвлекаясь на ARGV.
 
 # case lang
@@ -22,12 +22,35 @@
 # else puts "больше языков нет"
 # end
 
-require 'open3'
+# require 'open3'
 
-puts "Введите команду для выполнения её OC:"
-cmd = gets.chomp()
-system(cmd)
+# puts "Введите команду для выполнения её OC:"
+# cmd = gets.chomp()
+# system(cmd)
 
-puts "Теперь введите код на Ruby:"
-rubyCmd = gets.chomp()
-system " ruby -e \'#{rubyCmd}\'"
+# puts "Теперь введите код на Ruby:"
+# rubyCmd = gets.chomp()
+# system " ruby -e \'#{rubyCmd}\'"
+
+#Метод 1 Найти количество чисел, взаимно простых с заданным.
+#Метод 2 Найти сумму цифр числа, делящихся на 3
+#Метод 3 Найти делитель числа, являющийся взаимно простым с
+#наибольшим количеством цифр данного числа.
+
+def nod(a, b) 
+    if (b == 0) then a
+    else nod(b, a % b)
+    end
+end
+
+def simple(a, b) 
+    1 == nod(a, b)
+end
+
+def euler(n, m = n, acc = 1) #функция Эйлера
+    if m == 1 then acc
+    else euler(n, m-1, (simple(n, m) ? 1:0 ) + acc)
+    end
+end
+
+puts(euler(10))
