@@ -89,30 +89,44 @@ def minArr(arr)
     return min
 end
 
-def firstPos(arr)
-    for i in 0..arr.length
-        return i if arr[i].to_i > 0
-    end
-    return -1
+# def firstPos(arr)
+#     for i in 0..arr.length
+#         return i if arr[i].to_i > 0
+#     end
+#     return -1
+# end
+
+# if ARGV.count < 2
+#     puts "Аргументы отсутствуют"
+#     return
+# end
+
+# method = ARGV[0]
+# path = ARGV[1]
+
+# file = File.open(path)
+# array = file.readline.split(' ').map(&:to_i)
+
+# puts "Массив, #{array}\n"
+# case method
+# when "1"
+#     puts "Минимальный элемент: #{minArr(array)}"
+# when "2"
+#     puts "Номер первого положительного элемента: #{firstPos(array)}"
+# else 
+#     puts "Метода под номером #{method} не существует"
+# end
+
+#1.8 дан целочисленный массив. Необходимо найти индексы двух наименьших элементов массива.
+
+def indexMin(arr)
+    #val1= minArr(arr)
+    indx1=arr.index(minArr(arr))
+    arr.fill(indx1,indx1) {|index| 10000}
+    #arr.delete(indx1)
+    #val2= minArr(arr)
+    indx2=arr.index(minArr(arr))
+    return indx1,indx2
 end
 
-if ARGV.count < 2
-    puts "Аргументы отсутствуют"
-    return
-end
-
-method = ARGV[0]
-path = ARGV[1]
-
-file = File.open(path)
-array = file.readline.split(' ').map(&:to_i)
-
-puts "Массив, #{array}\n"
-case method
-when "1"
-    puts "Минимальный элемент: #{minArr(array)}"
-when "2"
-    puts "Номер первого положительного элемента: #{firstPos(array)}"
-else 
-    puts "Метода под номером #{method} не существует"
-end
+puts(indexMin([1,2,3,-3,-5]))
