@@ -37,15 +37,15 @@
 #Метод 3 Найти делитель числа, являющийся взаимно простым с
 #наибольшим количеством цифр данного числа.
 
-def nod(a, b) 
-    if (b == 0) then a
-    else nod(b, a % b)
-    end
-end
+# def nod(a, b) 
+#     if (b == 0) then a
+#     else nod(b, a % b)
+#     end
+# end
 
-def simple(a, b) 
-    1 == nod(a, b)
-end
+# def simple(a, b) 
+#     1 == nod(a, b)
+# end
 
 # def euler(n, m = n, acc = 1) #функция Эйлера
 #     if m == 1 then acc
@@ -66,21 +66,53 @@ end
 #     return rez
 # end
 
+# def otv(n)
+#     divisors = (2...n).select{|numbers| n%numbers == 0}
+#     count=0
+#     array=[]
+#     for i in divisors do
+#         n.digits.each { 
+#                     |dig| 
+#                     if simple(i,dig)
+#                         count+=1
+#                     end
+#                 }
+#         array<<count       
+#     end
+#     return array.max
+# end
 
-def otv(n)
-    divisors = (2...n).select{|numbers| n%numbers == 0}
-    count=0
-    array=[]
-    for i in divisors do
-        n.digits.each { 
-                    |dig| 
-                    if simple(i,dig)
-                        count+=1
-                    end
-                }
-        array<<count       
-    end
-    return array.max
+# puts(otv(123))
+
+def minArr(arr)
+    min = arr.min
+    return min
 end
 
-puts(otv(123))
+def firstPos(arr)
+    for i in 0..arr.length
+        return i if arr[i].to_i > 0
+    end
+    return -1
+end
+
+if ARGV.count < 2
+    puts "Аргументы отсутствуют"
+    return
+end
+
+method = ARGV[0]
+path = ARGV[1]
+
+file = File.open(path)
+array = file.readline.split(' ').map(&:to_i)
+
+puts "Массив, #{array}\n"
+case method
+when "1"
+    puts "Минимальный элемент: #{minArr(array)}"
+when "2"
+    puts "Номер первого положительного элемента: #{firstPos(array)}"
+else 
+    puts "Метода под номером #{method} не существует"
+end
