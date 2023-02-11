@@ -153,44 +153,37 @@ end
 
 #1.44 Дан массив чисел. Необходимо проверить, чередуются ли в нем целые и вещественные числа.
 
-# def int(a)
-#     if a.is_a? Integer
-#        return true
-#     else 
-#         return false
-#     end
-# end
-
-# def prov(arr)
-#     index=arr.length + 1
-#     if int(arr[0..index])==true && int(arr[0..index+1])==false
-#         puts "да"
-#     else 
-#         puts "нет"
-#     end
-# end
-
-# puts(prov([1,2.0,3,4.0]))
+def altnum(array)
+    previous_element = array[0]
+    array[1..-1].each do |element|
+    if previous_element.class == element.class
+    return false
+    end
+    previous_element = element
+    end
+    return true
+end
+puts(altnum([1,2.0,3,4.0]))
 
 #1.56. Для введенного списка посчитать среднее арифметическое непростых элементов, 
 #которые больше, чем среднее арифметическое простых.
-def mean(array)
-    array.sum.to_f / array.length
-end
+# def mean(array)
+#     array.sum.to_f / array.length
+# end
     
-def prime?(num)
-    return false if num <= 1
-    2.upto(Math.sqrt(num).to_i) do |i|
-    return false if num % i == 0
-    end
-    true
-end
+# def prime?(num)
+#     return false if num <= 1
+#     2.upto(Math.sqrt(num).to_i) do |i|
+#     return false if num % i == 0
+#     end
+#     true
+# end
     
-def calculate_mean(array)
-    prime_numbers = array.select { |num| prime?(num) }
-    non_prime_numbers = array.reject { |num| prime?(num) }
-    prime_mean = mean(prime_numbers)
-    non_prime_mean = mean(non_prime_numbers.select { |num| num > prime_mean })
-    non_prime_mean
-end
-puts calculate_mean([3, 4, 7, 12, 15, 20, 23, 29, 40])
+# def calculate_mean(array)
+#     prime_numbers = array.select { |num| prime?(num) }
+#     non_prime_numbers = array.reject { |num| prime?(num) }
+#     prime_mean = mean(prime_numbers)
+#     non_prime_mean = mean(non_prime_numbers.select { |num| num > prime_mean })
+#     non_prime_mean
+# end
+# puts calculate_mean([3, 4, 7, 12, 15, 20, 23, 29, 40])
