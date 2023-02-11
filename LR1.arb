@@ -37,6 +37,16 @@
 #Метод 3 Найти делитель числа, являющийся взаимно простым с
 #наибольшим количеством цифр данного числа.
 
+def localmax(arr)
+    locm=[]
+    for i in arr do
+        if arr[i + 1].nil? == false && arr[i - 1].nil? == false && arr[i-1] < arr[i] && arr[i] > arr[i+1]
+            locm<<arr[i]
+        end
+    end
+    return locm
+end
+
 # def nod(a, b) 
 #     if (b == 0) then a
 #     else nod(b, a % b)
@@ -60,7 +70,7 @@
 #     num.digits.each { 
 #         |dig| 
 #         if dig % 3 == 0
-#             res += dig 
+#             rez += dig 
 #         end
 #     }
 #     return rez
@@ -120,11 +130,8 @@ end
 #1.8 дан целочисленный массив. Необходимо найти индексы двух наименьших элементов массива.
 
 # def indexMin(arr)
-#     #val1= minArr(arr)
 #     indx1=arr.index(minArr(arr))
 #     arr.fill(indx1,indx1) {|index| 10000}
-#     #arr.delete(indx1)
-#     #val2= minArr(arr)
 #     indx2=arr.index(minArr(arr))
 #     return indx1,indx2
 # end
@@ -132,7 +139,14 @@ end
 # puts(indexMin([1,2,3,-3,-5]))
 
 #1.20 Дан целочисленный массив. Необходимо найти все пропущенные числа.
-def findmiss(arr)
-    (arr.min..arr.max).to_a - arr
-end
-puts(findmiss([1,2,5,6,9]))
+# def findmiss(arr)
+#     (arr.min..arr.max).to_a - arr
+# end
+# puts(findmiss([1,2,5,6,9]))
+
+#1.32 Дан целочисленный массив. Найти количество его локальных максимумов.
+# def lm(arr)
+#     locarr=localmax(arr)
+#     locarr.reduce(0) {|count| count.+1}
+# end
+# puts(lm([1,12,3,154,7]))
