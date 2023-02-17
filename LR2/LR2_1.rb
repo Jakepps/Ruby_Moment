@@ -61,10 +61,21 @@ class Student
     def self.valid_telegram?(telegram)
       telegram.is_a?(String) && telegram.match(/\A[a-zA-Z0-9]+\z/)
     end
-  
+ 
+    def self.valid_mail?(mail)
+      mail.is_a?(String) && mail.match(/\A[a-zA-Z0-9]+@[a-z]+.[a-z]+\z/)
+    end
+    
+    def self.valid_git?(git)
+      git.is_a?(String) && git.match(/\Ahttps?:\/\/github\.com\/[a-zA-Z0-9]+\/[a-zA-Z0-9]+\z/)
+    end
+     
     def set_contacts(params = { phone: '', telegram: ''})
       @phone = params[:phone] if self.class.valid_phone?(params[:phone])
       @telegram = params[:telegram] if self.class.valid_telegram?(params[:telegram])
     end
     
+    def validate_contact
+      raise ArgumentError, 'A contact for communication is required' unless (git || phone || telegram || mail)
+    end
 end
