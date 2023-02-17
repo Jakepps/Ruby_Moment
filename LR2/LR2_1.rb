@@ -53,4 +53,18 @@ class Student
     def to_s
       "ID: #{id}, Surname: #{surname}, First name: #{first_name}, Patronymic: #{patronymic}, Phone: #{phone}, Telegram: #{telegram}, Mail: #{mail}, Git: #{git}"
     end
+
+    def self.valid_phone?(phone)
+      phone.is_a?(String) && phone.match(/\A[0-9]+\z/)
+    end
+    
+    def self.valid_telegram?(telegram)
+      telegram.is_a?(String) && telegram.match(/\A[a-zA-Z0-9]+\z/)
+    end
+  
+    def set_contacts(params = { phone: '', telegram: ''})
+      @phone = params[:phone] if self.class.valid_phone?(params[:phone])
+      @telegram = params[:telegram] if self.class.valid_telegram?(params[:telegram])
+    end
+    
 end
