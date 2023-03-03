@@ -45,7 +45,19 @@ class Student
       raise "Файл не найден по указанному адресу #{file_path}. Исключение: #{exception.message}"
     end
   end
-  
+
+  def self.write_to_txt(file_path, students)
+    begin
+      File.open(file_path, 'w') do |file|
+        students.each do |student|
+          file.puts student.to_s
+        end
+      end
+    rescue => exception
+      raise "Ошибка записи в файл по указанному адресу#{file_path}. Исключение: #{exception.message}"
+    end
+  end
+
   def validate
     unless self.git
       raise ArgumentError.new("Не заполнено поле Git")
