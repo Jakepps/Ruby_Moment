@@ -9,6 +9,13 @@ student2 = Student.new(id: 2, last_name: "Нагалевский", name: "Арт
 student3 = Student.new(id: 3, last_name: "Волков", name: "Серега", telegram: "starproxima", git: "https://github.com/starproxima")
 #puts student3
 
+begin
+    students = Student.read_from_txt('test.txt')
+    
+    students.each do |student|
+        puts "#{student.get_info}"
+    end
+end
 
 students = [
     Student.new('Иванов', 'Иван', 'Иванович', '79991234567', '@ivanov', 'ivanov@mail.ru', 'ivanov'),
