@@ -63,4 +63,9 @@ class Student
     self.telegram = telegram if telegram
     self.email = email if email
   end
+
+  def getInfo
+    "#{last_name} #{initials}; GitHub: #{github}, Email: #{contact}"
+  end
+
 end
