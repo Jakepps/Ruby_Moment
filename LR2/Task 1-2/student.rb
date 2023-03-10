@@ -28,31 +28,31 @@ class Student
     contacts.each do |key, value|
         case key.to_sym
         when :phone
-        self.phone = value
+          self.phone = value
         when :telegram
-        self.telegram = value
+          self.telegram = value
         when :mail
-        self.mail = value
+          self.mail = value
         else
         raise ArgumentError, "Недопустимый тип контакта: #{key}"
         end
     end
   end
 
-  def getInfo
+  def get_info
     "#{last_name} #{initials}; GitHub: #{github}, Email: #{get_contact()}"
   end
 
   def get_contact
     info = ""
     if phone
-        info += " Phone: #{phone}"
+      info += " Phone: #{phone}"
     end
     if telegram
-        info += " Telegram: #{telegram}"
+      info += " Telegram: #{telegram}"
     end
     if email
-        info += " Mail: #{email}"
+      info += " Mail: #{email}"
     end
     info
   end 
@@ -72,32 +72,32 @@ class Student
   end
 
   def validate_git
-      if git.nil? || git.empty? || git.match?(/\Ahttps:\/\/github\.com\/[a-zA-Z0-9]+\z/)
-      raise ArgumentError, "URL-адрес GitHub не может быть пустым или вы ввели его неправильно"
-      end
+    if git.nil? || git.empty? || git.match?(/\Ahttps:\/\/github\.com\/[a-zA-Z0-9]+\z/)
+    raise ArgumentError, "URL-адрес GitHub не может быть пустым или вы ввели его неправильно"
+    end
   end
 
   def validate_contact
-      if phone.nil? && telegram.nil? && mail.nil? && phone.match?(/\A(\+)?(\d|\s){10,}\z/) && telegram.match?(/\A[a-zA-Z0-9]+\z/) && email.match?(/\A[a-zA-Z0-9]+@[a-z]+.[a-z]+\z/)
-      raise ArgumentError, "Должен быть предусмотрен по крайней мере один способ связи и они должны быть верно написаны, проверьте правилльность данных"
-      end
+    if phone.nil? && telegram.nil? && mail.nil? && phone.match?(/\A(\+)?(\d|\s){10,}\z/) && telegram.match?(/\A[a-zA-Z0-9]+\z/) && email.match?(/\A[a-zA-Z0-9]+@[a-z]+.[a-z]+\z/)
+    raise ArgumentError, "Должен быть предусмотрен по крайней мере один способ связи и они должны быть верно написаны, проверьте правилльность данных"
+    end
   end
   
   def self.valid_phone?(phone)
-    phone.nil? || phone == '' ||  phone.is_a?(String) && phone.match?(/\A(\+)?(\d|\s){10,}\z/)
+    phone.nil? || phone.is_a?(String) && phone.match?(/\A(\+)?(\d|\s){10,}\z/)
   end
 
-  def self.valid_telegram?(telegram)
-      telegram.nil? || telegram.is_a?(String) && telegram.match?(/\A[a-zA-Z0-9]+\z/)
-  end
+  # def self.valid_telegram?(telegram)
+  #   telegram.nil? || telegram.is_a?(String) && telegram.match?(/\A[a-zA-Z0-9]+\z/)
+  # end
 
-  def self.valid_email?(email)
-      email.nil? || email.is_a?(String) && email.match?(/\A[a-zA-Z0-9]+@[a-z]+.[a-z]+\z/)
-  end
+  # def self.valid_email?(email)
+  #   email.nil? || email.is_a?(String) && email.match?(/\A[a-zA-Z0-9]+@[a-z]+.[a-z]+\z/)
+  # end
 
-  def self.valid_git?(git)
-      git == nil || git.is_a?(String) && git.match?(/\Ahttps:\/\/github\.com\/[a-zA-Z0-9]+\z/)
-end
+  # def self.valid_git?(git)
+  #   git.nil? || git.is_a?(String) && git.match?(/\Ahttps:\/\/github\.com\/[a-zA-Z0-9]+\z/)
+  # end
 
   def self.read_from_txt(file_path)
     students = []
@@ -131,41 +131,37 @@ class Student_short < Student
   attr_reader :id, :surname_initials, :git, :contact
 
   def initialize(id, surname_initials, git, contact)
-      super({id: id, git: git})
-      @surname_initials = surname_initials
-      @contact = contact
+    super({id: id, git: git})
+    @surname_initials = surname_initials
+    @contact = contact
   end
 
     
   def self.from_student(student)
-      # super({id: student.id, surname: student.surname, first_name: student.first_name, 
-      #   patronymic: student.patronymic, phone: student.phone, telegram: student.telegram,
-      #   email: student.email, git: student.git})
-      
-      surname_initials = "#{student.surname} #{student.first_name[0]}.#{student.patronymic[0]}."
-      contact = student.get_contact()
+    surname_initials = "#{student.last_name} #{student.first_name[0]}.#{student.surname[0]}."
+    contact = student.get_contact()
 
-      new(student.id, surname_initials, student.git, contact)
-    end
+    new(student.id, surname_initials, student.git, contact)
+  end
 
   def to_s
-      "ID: #{id}, Surname initials: #{surname_initials}, Git: #{git}, Contacts: #{contact}"
+    "ID: #{id}, Фамилия, инициалы: #{surname_initials}, Git: #{git}, Contacts: #{contact}"
   end
 
   def id=(_)
-    raise ReadOnlyError, "Cannot set read-only attribute: id"
+    raise ReadOnlyError, "Не удается установить атрибут, доступный только для чтения: id"
   end
 
   def surname_initials=(_)
-    raise ReadOnlyError, "Cannot set read-only attribute: surname_initials"
+    raise ReadOnlyError, "Не удается установить атрибут, доступный только для чтения: surname_initials"
   end
 
   def git=(_)
-    raise ReadOnlyError, "Cannot set read-only attribute: git"
+    raise ReadOnlyError, "Не удается установить атрибут только для чтения: git"
   end
 
   def contact=(_)
-    raise ReadOnlyError, "Cannot set read-only attribute: contact"
+    raise ReadOnlyError, "Не удается установить атрибут, доступный только для чтения: контакт"
   end
 end
 
