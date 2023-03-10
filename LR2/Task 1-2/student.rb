@@ -58,39 +58,135 @@ class Student
     end
   end
 
+  #это сеттер
+  def phone=(value)
+    if self.class.valid_phone?(value)
+      @phone = value
+    else
+      raise ArgumentError, "Invalid phone number format"
+    end
+  end
+
+  # Городецкий сказал что кринж 👍
+  # def self.validate(last_name, initials, github, contact)
+  #   raise ArgumentError, "Неверная фамилия: #{last_name}" unless valid_lastname?
+    
+  #   raise ArgumentError, "Неверные инициалы: #{initials}" unless valid_initials?
+    
+  #   raise ArgumentError, "Неверный GitHub: #{github}" unless valid_github?
+    
+  #   raise ArgumentError, "Неверные контактные данные: #{contact}" unless valid_contact?
+  # end
+
   def validate
-    unless self.git
-      raise ArgumentError.new("Не заполнено поле Git")
+    validate_git
+    validate_contact
+  end
+
+  def validate_git
+      if git.nil? || git.empty?
+      raise ArgumentError, "GitHub URL cannot be blank"
+      end
+  end
+
+  def validate_contact
+      if phone.nil? && telegram.nil? && mail.nil?
+      raise ArgumentError, "At least one contact method must be provided"
+      end
+  end
+
+  def self.valid_phone?(phone)
+    phone.nil? || phone == '' ||  phone.is_a?(String) && phone.match?(/\A(\+)?(\d|\s){10,}\z/)
+  end
+
+  def self.valid_telegram?(telegram)
+      telegram.nil? || telegram.is_a?(String) && telegram.match?(/\A[a-zA-Z0-9]+\z/)
+  end
+
+  def self.valid_email?(email)
+      email.nil? || email.is_a?(String) && email.match?(/\A[a-zA-Z0-9]+@[a-z]+.[a-z]+\z/)
+  end
+
+  def self.valid_git?(git)
+      git == nil || git.is_a?(String) && git.match?(/\Ahttps:\/\/github\.com\/[a-zA-Z0-9]+\z/)
+  end
+
+end
+
+
+#короткий стюдент, перенес в главный файл
+class Student_short < Student
+  attr_reader :id, :surname_initials, :git, :contact
+
+  def initialize(id, surname_initials, git, contact)
+      super({id: id, git: git})
+      @surname_initials = surname_initials
+      @contact = contact
+  end
+
+    
+  def self.from_student(student)
+      # super({id: student.id, surname: student.surname, first_name: student.first_name, 
+      #   patronymic: student.patronymic, phone: student.phone, telegram: student.telegram,
+      #   email: student.email, git: student.git})
+      
+      surname_initials = "#{student.surname} #{student.first_name[0]}.#{student.patronymic[0]}."
+      contact = student.get_contact()
+
+      new(student.id, surname_initials, student.git, contact)
     end
-    unless self.phone || self.telegram || self.email
-      raise ArgumentError.new("Не заполнено ни одно поле для связи")
-    end
+
+  def to_s
+      "ID: #{id}, Surname initials: #{surname_initials}, Git: #{git}, Contacts: #{contact}"
   end
 
-  def self.validate(last_name, initials, github, contact)
-    raise ArgumentError, "Неверная фамилия: #{last_name}" unless valid_lastname?
-    
-    raise ArgumentError, "Неверные инициалы: #{initials}" unless valid_initials?
-    
-    raise ArgumentError, "Неверный GitHub: #{github}" unless valid_github?
-    
-    raise ArgumentError, "Неверные контактные данные: #{contact}" unless valid_contact?
+  def id=(_)
+    raise ReadOnlyError, "Cannot set read-only attribute: id"
   end
 
-  def valid_lastname?
-    contacts[:last_name].to_s.match?(/^\p{L}+$/)
+  def surname_initials=(_)
+    raise ReadOnlyError, "Cannot set read-only attribute: surname_initials"
   end
 
-  def valid_initials?
-    contacts[:initials].to_s.match?(/^[А-Я]\.[А-Я]\.$/)
+  def git=(_)
+    raise ReadOnlyError, "Cannot set read-only attribute: git"
   end
 
-  def valid_github?
-    contacts[:github].to_s.match?(/\Ahttps?:\/\/github\.com\/[a-zA-Z0-9]+\/[a-zA-Z0-9]+\z/)
+  def contact=(_)
+    raise ReadOnlyError, "Cannot set read-only attribute: contact"
   end
+end
 
-  def valid_contact?
-    contacts[:contact].to_s.match?(/\A[\w+\-.]+@[a-z\d\-]+(\.[a-z\d\-]+)*\.[a-z]+\z/i)
+#блок с наследованием
+#базированный гигачад- родительский класс 
+class StudentBase 
+  attr_reader :id, :name, :surname, :github, :contact
+  
+  def initialize(id:, name:, surname:, github:, contact:)
+    @id = id
+    @name = name
+    @surname = surname
+    @github = github
+    @contact = contact
   end
+  
+  def info
+    "#{surname} #{name[0]}. #{github}, #{contact}"
+  end
+end
 
+#добавим группу 
+class Student < StudentBase
+  attr_accessor :group
+
+  def initialize(id:, name:, surname:, github:, contact:, group:)
+      super(id: id, name: name, surname: surname, github: github, contact: contact)
+      @group = group
+  end
+end
+
+class StudentShort < StudentBase
+  def initialize(id:, name:, surname:, github:, contact:)
+      super(id: id, name: name, surname: surname, github: github, contact: contact)
+  end
 end
