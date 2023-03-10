@@ -66,7 +66,6 @@ class Student
       raise ArgumentError, "Invalid phone number format"
     end
   end
-
   # Городецкий сказал что кринж 👍
   # def self.validate(last_name, initials, github, contact)
   #   raise ArgumentError, "Неверная фамилия: #{last_name}" unless valid_lastname?
