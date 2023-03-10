@@ -24,14 +24,63 @@ class Student
     "#{@first_name[0]}.#{@surname[0]}." if @first_name && @surname
   end
 
-  def set_contacts(phone: nil, telegram: nil, email: nil)
-    self.phone = phone if phone
-    self.telegram = telegram if telegram
-    self.email = email if email
+  def set_contacts(contacts)
+    contacts.each do |key, value|
+        case key.to_sym
+        when :phone
+        self.phone = value
+        when :telegram
+        self.telegram = value
+        when :mail
+        self.mail = value
+        else
+        raise ArgumentError, "Недопустимый тип контакта: #{key}"
+        end
+    end
   end
 
   def getInfo
-    "#{last_name} #{initials}; GitHub: #{github}, Email: #{contact}"
+    "#{last_name} #{initials}; GitHub: #{github}, Email: #{get_contact()}"
+  end
+
+  def get_contact
+    info = ""
+    if phone
+        info += " Phone: #{phone}"
+    end
+    if telegram
+        info += " Telegram: #{telegram}"
+    end
+    if email
+        info += " Mail: #{email}"
+    end
+    info
+  end 
+
+  #это сеттер телефона
+  def phone=(value)
+    if self.class.valid_phone?(value)
+      @phone = value
+    else
+      raise ArgumentError, "Недопустимый формат телефонного номера"
+    end
+  end
+
+  def validate
+    validate_git
+    validate_contact
+  end
+
+  def validate_git
+      if git.nil? || git.empty? || git.match?(/\Ahttps:\/\/github\.com\/[a-zA-Z0-9]+\z/)
+      raise ArgumentError, "URL-адрес GitHub не может быть пустым или вы ввели его неправильно"
+      end
+  end
+
+  def validate_contact
+      if phone.nil? && telegram.nil? && mail.nil? && phone.match?(/\A(\+)?(\d|\s){10,}\z/) && telegram.match?(/\A[a-zA-Z0-9]+\z/) && email.match?(/\A[a-zA-Z0-9]+@[a-z]+.[a-z]+\z/)
+      raise ArgumentError, "Должен быть предусмотрен по крайней мере один способ связи и они должны быть верно написаны, проверьте правилльность данных"
+      end
   end
 
   def self.read_from_txt(file_path)
@@ -56,58 +105,6 @@ class Student
     rescue => exception
       raise "Ошибка записи в файл по указанному адресу#{file_path}. Исключение: #{exception.message}"
     end
-  end
-
-  #это сеттер
-  def phone=(value)
-    if self.class.valid_phone?(value)
-      @phone = value
-    else
-      raise ArgumentError, "Invalid phone number format"
-    end
-  end
-  # Городецкий сказал что кринж 👍
-  # def self.validate(last_name, initials, github, contact)
-  #   raise ArgumentError, "Неверная фамилия: #{last_name}" unless valid_lastname?
-    
-  #   raise ArgumentError, "Неверные инициалы: #{initials}" unless valid_initials?
-    
-  #   raise ArgumentError, "Неверный GitHub: #{github}" unless valid_github?
-    
-  #   raise ArgumentError, "Неверные контактные данные: #{contact}" unless valid_contact?
-  # end
-
-  def validate
-    validate_git
-    validate_contact
-  end
-
-  def validate_git
-      if git.nil? || git.empty?
-      raise ArgumentError, "GitHub URL cannot be blank"
-      end
-  end
-
-  def validate_contact
-      if phone.nil? && telegram.nil? && mail.nil?
-      raise ArgumentError, "At least one contact method must be provided"
-      end
-  end
-
-  def self.valid_phone?(phone)
-    phone.nil? || phone == '' ||  phone.is_a?(String) && phone.match?(/\A(\+)?(\d|\s){10,}\z/)
-  end
-
-  def self.valid_telegram?(telegram)
-      telegram.nil? || telegram.is_a?(String) && telegram.match?(/\A[a-zA-Z0-9]+\z/)
-  end
-
-  def self.valid_email?(email)
-      email.nil? || email.is_a?(String) && email.match?(/\A[a-zA-Z0-9]+@[a-z]+.[a-z]+\z/)
-  end
-
-  def self.valid_git?(git)
-      git == nil || git.is_a?(String) && git.match?(/\Ahttps:\/\/github\.com\/[a-zA-Z0-9]+\z/)
   end
 
 end
