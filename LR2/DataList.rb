@@ -30,4 +30,17 @@ class Data_list
     def select(number)
         @selected << number
     end
+
+    def get_selected
+        @selected
+    end
+
+    def get_names
+        raise NotImplementedError, "Должен быть реализован в подклассе"
+    end
+
+    def get_data
+        raise NotImplementedError, "Должен быть реализован в подклассе"
+    end
+
 end
