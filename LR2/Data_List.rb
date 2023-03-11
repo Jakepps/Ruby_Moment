@@ -42,5 +42,8 @@ class Data_list
     def get_data
         raise NotImplementedError, "Должен быть реализован в подклассе"
     end
-
+    
+    def each
+        @data.each { |element| yield element }
+      end
 end
