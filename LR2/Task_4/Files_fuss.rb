@@ -1,3 +1,7 @@
+require 'json'
+require 'yaml'
+require_relative '../task3/Data_list.rb'
+
 class Students_list_txt < Data_list
     attr_accessor :file_path
   
@@ -58,5 +62,133 @@ class Students_list_txt < Data_list
   
     def get_student_short_count
       @data.length
+    end
+end
+
+class Students_list_JSON
+  def initialize(file_path)
+    @file_path = file_path
+    @students = []
+
+    if File.exist?(file_path)
+      read_from_file
+    else
+      write_to_file
+    end
+  end
+
+  def read_from_file
+    file = File.read(@file_path)
+    @students = JSON.parse(file)
+  end
+
+  def write_to_file
+    File.open(@file_path, 'w') do |f|
+      f.write(@students.to_json)
+    end
+  end
+
+  def add_student(student)
+    student_id = @students.empty? ? 1 : @students.last[:id] + 1
+    @students << { id: student_id, student: student }
+    write_to_file
+  end
+
+  def replace_student(student_id, student)
+    student_index = @students.index { |s| s[:id] == student_id }
+    @students[student_index][:student] = student if student_index
+    write_to_file
+  end
+
+  def delete_student(student_id)
+    @students.delete_if { |s| s[:id] == student_id }
+    write_to_file
+  end
+
+  def get_student(student_id)
+    student = @students.find { |s| s[:id] == student_id }
+    student[:student] if student
+  end
+
+  def get_k_n_student_short_list(k, n, data_list = nil)
+    data = @students[k...k+n].map { |s| s[:student] }
+    if data_list
+      data_list.data = data
+      data_list
+    else
+      Data_list.new(data)
+    end
+  end
+
+  def sort_by_surname_initials
+    @students.sort! do |a, b|
+      student_a = a[:student]
+      student_b = b[:student]
+      if student_a.surname == student_b.surname
+        student_a.first_name <=> student_b.first_name
+      else
+        student_a.surname <=> student_b.surname
+      end
+    end
+    write_to_file
+  end
+
+  def get_student_short_count
+    @students.count
+  end
+end
+
+class Students_list_YAML < Data_list
+    def initialize(file_path = "students_ex.yml")
+        super()
+        @file_path = file_path
+        @students = []
+        if File.exists?(file_path)
+        @students = YAML.load_file(file_path)
+        end
+    end
+
+    def add(student)
+        new_id = (@students.map { |s| s.id.to_i }.max || 0) + 1
+        student.id = new_id.to_s
+        @students << student
+        write_to_file
+    end
+
+    def delete(student_id)
+        student = get(student_id)
+        @students.delete(student)
+        write_to_file
+    end
+    
+    def write_to_file
+        File.open(@file_path, 'w') do |file|
+        file.write(@students.to_yaml)
+        end
+    end
+
+    def replace(student)
+        delete(student.id)
+        add(student)
+    end
+
+    def sort_by_full_name
+        @students.sort_by! { |s| [s.surname, s.first_name, s.patronymic] }
+        write_to_file
+    end
+
+    def get(student_id)
+        @students.find { |s| s.id == student_id }
+    end
+
+    def get_k_n_student_short_list(n, k, data_list = nil)
+        students_data = YAML.load_file(filename)
+        student_list = students_data.map { |data| Student_short.new(id: data.id, surname: "#{data.surname} #{data.first_name[0]}.") }
+        short_list = student_list.drop(n - 1).take(k)
+        Data_list.new(short_list)
+    end
+    
+    def get_student_short_count
+        @students.count
     end
 end

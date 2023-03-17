@@ -1,0 +1,16 @@
+- name: John Smith
+  age: 35
+  email: john.smith@example.com
+  address:
+    street: 123 Main St
+    city: Anytown
+    state: CA
+    zip: 12345
+- name: Jane Doe
+  age: 27
+  email: jane.doe@example.com
+  address:
+    street: 456 Oak St
+    city: Anycity
+    state: NY
+    zip: 67890
