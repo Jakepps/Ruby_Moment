@@ -86,15 +86,9 @@ end
 
 class Obj_array
   def initialize(column_names, object_array)
+    raise ArgumentError, "Ожидаемый массив строковых объектов для column_names" unless column_names.all? { |name| name.is_a?(String) }
+    raise ArgumentError, "Ожидаемый массив хэш-объектов для object_array" unless object_array.all? { |obj| obj.is_a?(Hash) }
     @column_names = column_names
     @object_array = object_array
-  end
-
-  def object_array=(new_object_array)
-    if new_object_array.all? { |obj| obj.is_a?(Hash) }
-      @object_array = new_object_array
-    else
-      raise ArgumentError, "Ожидаемый массив хэш-объектов"
-    end
   end
 end
