@@ -29,26 +29,56 @@ class Data_list
   end
 
   def select(number)
-      @selected << number
+    @selected << number
   end
 
   def get_selected
-      @selected
+    @selected
   end
 
   def get_names
-      raise NotImplementedError, "Должен быть реализован в подклассе"
+    raise NotImplementedError, "Должен быть реализован в подклассе"
   end
 
   def get_data
-      raise NotImplementedError, "Должен быть реализован в подклассе"
+    raise NotImplementedError, "Должен быть реализован в подклассе"
   end
   
   def each
-      @data.each { |element| yield element }
+    @data.each { |element| yield element }
   end
 
   private
 
   attr_reader :data
 end
+
+class Data_list_2
+  attr_reader :data
+
+  private_class_method :new
+
+  def initialize(data)
+    @data = data
+    @selected = []
+  end
+
+  def select(number)
+    @selected << @data[number]
+  end
+
+  def selected
+    @selected.map(&:id)
+  end
+
+  def each
+    @data.each { |element| yield element }
+  end
+
+  def get_names
+    raise NotImplementedError, "Подклассы должны реализовывать этот метод"
+  end
+
+  def get_data
+    raise NotImplementedError, "Подклассы должны реализовывать этот метод"
+  end
