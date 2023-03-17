@@ -82,3 +82,19 @@ class Data_list_2
   def get_data
     raise NotImplementedError, "Подклассы должны реализовывать этот метод"
   end
+end 
+
+class Obj_array
+  def initialize(column_names, object_array)
+    @column_names = column_names
+    @object_array = object_array
+  end
+
+  def object_array=(new_object_array)
+    if new_object_array.all? { |obj| obj.is_a?(Hash) }
+      @object_array = new_object_array
+    else
+      raise ArgumentError, "Ожидаемый массив хэш-объектов"
+    end
+  end
+end
