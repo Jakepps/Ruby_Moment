@@ -10,7 +10,7 @@ class Data_list
   def [](index)
     @data[index]
   end
-
+  # & позволяет вызывать метод each с переданным блоком в качестве параметра
   def each(&block)
     @data.each(&block)
   end

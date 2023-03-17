@@ -18,31 +18,31 @@ class Shipping
     def shipping_cost(weight)
       @strategy.calculate(weight)
     end
-  end
+end
   
-  #Определим интерфейс базовой стратегии
-  class ShippingStrategy
+#Определим интерфейс базовой стратегии
+class ShippingStrategy
     def calculate(weight)
-      raise NotImplementedError, 'Подклассы должны реализовывать этот метод'
+    raise NotImplementedError, 'Подклассы должны реализовывать этот метод'
     end
-  end
-  
-  #Определим конкретные стратегии
-  class FlatRateShipping < ShippingStrategy
+end
+
+#Определим конкретные стратегии
+class FlatRateShipping < ShippingStrategy
     def calculate(weight)
-      5.00
+    5.00
     end
-  end
-  
-  class FreeShipping < ShippingStrategy
+end
+
+class FreeShipping < ShippingStrategy
     def calculate(weight)
-      0.00
+    0.00
     end
-  end
-  
-  class WeightBasedShipping < ShippingStrategy
+end
+
+class WeightBasedShipping < ShippingStrategy
     def calculate(weight)
-      weight * 0.10
+    weight * 0.10
     end
 end
   
