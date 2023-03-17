@@ -65,7 +65,7 @@ class Students_list_txt < Data_list
     end
 end
 
-class Students_list_JSON
+class Students_list_JSON < Data_list
   def initialize(file_path)
     @file_path = file_path
     @students = []

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagram</title>
+</head>
+<body>
+  <script src="https://unpkg.com/graphre/dist/graphre.js"></script>
+  <script src="https://unpkg.com/nomnoml/dist/nomnoml.js"></script>
+
+  <canvas id="target-canvas"></canvas>
+  <script>
+      var canvas = document.getElementById('target-canvas');
+      var source = `#direction: right
+#zoom: 0.9
+
+#font: Roboto
+#fontSize: 20
+#leading: 2
+#padding: 12
+
+#fillArrows: true
+#arrowSize: 0.5
+#spacing: 130
+
+#lineWidth: 1.5
+#stroke: #33322E
+
+#.class: fill=#FEDCC4 title=bold
+#.module: fill=#D9E6FF title=bold
+[<class> Students_list_txt |
+  @file_path |
+  +initialize(file_path, data_list); +write_to_file; +get_student_by_id(id); +get_k_n_student_short_list(k, n, data_list, student_f); +sort_by_last_name_initials; +add_student(student); +replace_student(id, student); +delete_student(id); +get_student_short_count |
+  
+]
+[<class> Students_list_JSON |
+  @file_path; @students |
+  +initialize(file_path); +read_from_file; +write_to_file; +add_student(student); +replace_student(student_id, student); +delete_student(student_id); +get_student(student_id); +get_k_n_student_short_list(k, n, data_list); +sort_by_surname_initials; +get_student_short_count |
+  
+]
+[<class> Students_list_YAML |
+  @file_path; @students |
+  +initialize(file_path); +add(student); +delete(student_id); +write_to_file; +replace(student); +sort_by_full_name; +get(student_id); +get_k_n_student_short_list(n, k, data_list); +get_student_short_count |
+  
+]
+[Students_list_txt] inherits <:- [Data_list]
+[Students_list_JSON] inherits <:- [Data_list]
+[Students_list_YAML] inherits <:- [Data_list]
+`;
+      nomnoml.draw(canvas, source);
+  </script>
+</body>
+</html>
