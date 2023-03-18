@@ -8,15 +8,15 @@ class Data_List_Student_Short < Data_List_2
     @data[0].instance_variables.count
   end
 
-  def row_count
-    @data.count
-  end
-
-  def names
-    %w[id surname initials git contact]
-  end
-
   def select(number)
     @selected << @data[number].id
+  end
+
+  def get_names
+    %w[git contact last_name_and_initials]
+  end
+
+  def get_data(obj)
+    [obj.git, obj.contact, obj.last_name_and_initials]
   end
 end

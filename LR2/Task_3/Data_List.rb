@@ -84,6 +84,9 @@ class Data_list_2
   end
 end 
 
+# массив объектов, заменяющий массив
+# объектов, при этом массив наименований столбцов НЕ
+# МЕНЯЕТСЯ никогда, модифицировать конструкторы.
 class Obj_array
   def initialize(column_names, object_array)
     raise ArgumentError, "Ожидаемый массив строковых объектов для column_names" unless column_names.all? { |name| name.is_a?(String) }

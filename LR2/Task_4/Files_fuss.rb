@@ -1,11 +1,12 @@
 require 'json'
 require 'yaml'
 require_relative '../task3/Data_list.rb'
+require_relative 'convert'
 
-class Students_list_txt < Data_list
+class Students_list_txt < Convert
     attr_accessor :file_path
   
-    def initialize(file_path, data_list = nil)
+    def convert_read(data)
       @file_path = file_path
       data = []
       if File.exist?(@file_path)
@@ -19,18 +20,17 @@ class Students_list_txt < Data_list
       super(data)
     end
   
-    def write_to_file
-      File.open(@file_path, "w") do |f|
-        @data.each do |student|
-          f.puts "#{student.id},#{student.last_name},#{student.first_name},#{student.surname},#{student.phone},#{student.telegram},#{student.email},#{student.git}"
-        end
-      end
+    def convert_write(hash_students)
+      string_arr = hash_students.map do |hash|
+        hash.map{|k,v| "#{k}:#{v}"}.join(',')
+      end.join("\n")
     end
   
     def get_student_by_id(id)
       @data.find { |student| student.id == id }
     end
-  
+    
+    # список k по счету n объектов класса Student_short 
     def get_k_n_student_short_list(k, n, data_list = nil, student_f=Student)
       data = @data[k..(k + n - 1)].map { |student| Student_short.new(id: student.id, last_name: student_f.last_name, initials: student.initials, git: student.git, contact: student.contact) }
       if data_list.nil?
@@ -65,7 +65,7 @@ class Students_list_txt < Data_list
     end
 end
 
-class Students_list_JSON < Data_list
+class Students_list_JSON < Convert
   def initialize(file_path)
     @file_path = file_path
     @students = []
@@ -77,16 +77,23 @@ class Students_list_JSON < Data_list
     end
   end
 
-  def read_from_file
-    file = File.read(@file_path)
-    @students = JSON.parse(file)
-  end
-
-  def write_to_file
-    File.open(@file_path, 'w') do |f|
-      f.write(@students.to_json)
+  def get_k_n_student_short_list(k, n, data_list = nil)
+    data = @students[k...k+n].map { |s| s[:student] }
+    if data_list
+      data_list.data = data
+      data_list
+    else
+      Data_list.new(data)
     end
   end
+
+	def convert_write(hash_students)
+		JSON.pretty_generate(hash_students)
+	end
+
+	def convert_read(file_content)
+		JSON.parse(file_content, {symbolize_names: true})
+	end
 
   def add_student(student)
     student_id = @students.empty? ? 1 : @students.last[:id] + 1
@@ -110,16 +117,6 @@ class Students_list_JSON < Data_list
     student[:student] if student
   end
 
-  def get_k_n_student_short_list(k, n, data_list = nil)
-    data = @students[k...k+n].map { |s| s[:student] }
-    if data_list
-      data_list.data = data
-      data_list
-    else
-      Data_list.new(data)
-    end
-  end
-
   def sort_by_surname_initials
     @students.sort! do |a, b|
       student_a = a[:student]
@@ -138,7 +135,7 @@ class Students_list_JSON < Data_list
   end
 end
 
-class Students_list_YAML < Data_list
+class Students_list_YAML < Convert
     def initialize(file_path = "students_ex.yml")
         super()
         @file_path = file_path
@@ -161,10 +158,12 @@ class Students_list_YAML < Data_list
         write_to_file
     end
     
-    def write_to_file
-        File.open(@file_path, 'w') do |file|
-        file.write(@students.to_yaml)
-        end
+    def convert_read(file_content)
+      YAML.safe_load(file_content).map{ |h| h.transform_keys(&:to_sym)}
+    end
+
+    def convert_read(file_content)
+      YAML.safe_load(file_content).map{ |h| h.transform_keys(&:to_sym)}
     end
 
     def replace(student)
