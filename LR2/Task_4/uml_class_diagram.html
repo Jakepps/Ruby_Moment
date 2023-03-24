@@ -30,24 +30,75 @@
 
 #.class: fill=#FEDCC4 title=bold
 #.module: fill=#D9E6FF title=bold
+[<class> Convert |
+   |
+  +convert_read(file_content); +convert_write(hash_students) |
+  
+]
+[<class> ConverterJSON |
+   |
+  +convert_read(file_content); +convert_write(hash_students) |
+  
+]
+[<class> ConverterTxt |
+   |
+  +convert_read(data); +convert_write(hash_students) |
+  
+]
+[<class> ConverterYAML |
+   |
+  +convert_read(file_content); +convert_write(hash_students) |
+  
+]
 [<class> Students_list_txt |
-  @file_path |
-  +initialize(file_path, data_list); +write_to_file; +get_student_by_id(id); +get_k_n_student_short_list(k, n, data_list, student_f); +sort_by_last_name_initials; +add_student(student); +replace_student(id, student); +delete_student(id); +get_student_short_count |
+   |
+  +convert_read(data); +convert_write(hash_students); +get_student_by_id(id); +get_k_n_student_short_list(k, n, data_list, student_f); +sort_by_last_name_initials; +add_student(student); +replace_student(id, student); +delete_student(id); +get_student_short_count |
   
 ]
 [<class> Students_list_JSON |
   @file_path; @students |
-  +initialize(file_path); +read_from_file; +write_to_file; +add_student(student); +replace_student(student_id, student); +delete_student(student_id); +get_student(student_id); +get_k_n_student_short_list(k, n, data_list); +sort_by_surname_initials; +get_student_short_count |
+  +initialize(file_path); +get_k_n_student_short_list(k, n, data_list); +convert_write(hash_students); +convert_read(file_content); +add_student(student); +replace_student(student_id, student); +delete_student(student_id); +get_student(student_id); +sort_by_surname_initials; +get_student_short_count |
   
 ]
 [<class> Students_list_YAML |
   @file_path; @students |
-  +initialize(file_path); +add(student); +delete(student_id); +write_to_file; +replace(student); +sort_by_full_name; +get(student_id); +get_k_n_student_short_list(n, k, data_list); +get_student_short_count |
+  +initialize(file_path); +add(student); +delete(student_id); +convert_read(file_content); +convert_read(file_content); +replace(student); +sort_by_full_name; +get(student_id); +get_k_n_student_short_list(n, k, data_list); +get_student_short_count |
   
 ]
+[<class> Shipping |
+  @strategy |
+  +initialize(strategy); +shipping_cost(weight) |
+  
+]
+[<class> ShippingStrategy |
+   |
+  +calculate(weight) |
+  
+]
+[<class> FlatRateShipping |
+   |
+  +calculate(weight) |
+  
+]
+[<class> FreeShipping |
+   |
+  +calculate(weight) |
+  
+]
+[<class> WeightBasedShipping |
+   |
+  +calculate(weight) |
+  
+]
+[ConverterJSON] inherits <:- [Converter]
+[ConverterTxt] inherits <:- [Converter]
+[ConverterYAML] inherits <:- [Converter]
 [Students_list_txt] inherits <:- [Data_list]
 [Students_list_JSON] inherits <:- [Data_list]
 [Students_list_YAML] inherits <:- [Data_list]
+[FlatRateShipping] inherits <:- [ShippingStrategy]
+[FreeShipping] inherits <:- [ShippingStrategy]
+[WeightBasedShipping] inherits <:- [ShippingStrategy]
 `;
       nomnoml.draw(canvas, source);
   </script>

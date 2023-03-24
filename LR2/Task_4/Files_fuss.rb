@@ -3,69 +3,69 @@ require 'yaml'
 require_relative '../task3/Data_list.rb'
 require_relative 'convert'
 
-class Students_list_txt < Convert
-    attr_accessor :file_path
-  
-    def convert_read(data)
-      @file_path = file_path
-      data = []
-      if File.exist?(@file_path)
-        File.open(@file_path, "r") do |f|
-          f.each_line do |line|
-            student_data = line.strip.split(',')
-            data << Student.new(id: student_data[0], last_name: student_data[1], first_name: student_data[2], surname: student_data[3], git: student_data[4], telegram: student_data[5], mail: student_data[6], phone: student_data[7])
-          end
+class Students_list_txt < Data_list
+  attr_accessor :file_path
+
+  def convert_read(data)
+    @file_path = file_path
+    data = []
+    if File.exist?(@file_path)
+      File.open(@file_path, "r") do |f|
+        f.each_line do |line|
+          student_data = line.strip.split(',')
+          data << Student.new(id: student_data[0], last_name: student_data[1], first_name: student_data[2], surname: student_data[3], git: student_data[4], telegram: student_data[5], mail: student_data[6], phone: student_data[7])
         end
       end
-      super(data)
     end
+    super(data)
+  end
+
+  def convert_write(hash_students)
+    string_arr = hash_students.map do |hash|
+      hash.map{|k,v| "#{k}:#{v}"}.join(',')
+    end.join("\n")
+  end
+
+  def get_student_by_id(id)
+    @data.find { |student| student.id == id }
+  end
   
-    def convert_write(hash_students)
-      string_arr = hash_students.map do |hash|
-        hash.map{|k,v| "#{k}:#{v}"}.join(',')
-      end.join("\n")
+  # список k по счету n объектов класса Student_short 
+  def get_k_n_student_short_list(k, n, data_list = nil, student_f=Student)
+    data = @data[k..(k + n - 1)].map { |student| Student_short.new(id: student.id, last_name: student_f.last_name, initials: student.initials, git: student.git, contact: student.contact) }
+    if data_list.nil?
+      DataListStudentShort.new(data)
+    else
+      data_list.data = data
+      data_list
     end
-  
-    def get_student_by_id(id)
-      @data.find { |student| student.id == id }
-    end
-    
-    # список k по счету n объектов класса Student_short 
-    def get_k_n_student_short_list(k, n, data_list = nil, student_f=Student)
-      data = @data[k..(k + n - 1)].map { |student| Student_short.new(id: student.id, last_name: student_f.last_name, initials: student.initials, git: student.git, contact: student.contact) }
-      if data_list.nil?
-        DataListStudentShort.new(data)
-      else
-        data_list.data = data
-        data_list
-      end
-    end
-  
-    def sort_by_last_name_initials
-      @data.sort_by! { |student| [student.last_name, student.first_name, student.surname] }
-    end
-  
-    def add_student(student)
-      max_id = @data.map { |s| s.id.to_i }.max
-      student.id = (max_id + 1).to_s
-      @data << student
-    end
-  
-    def replace_student(id, student)
-      student.id = id
-      @data.map! { |s| s.id == id ? student : s }
-    end
-  
-    def delete_student(id)
-      @data.delete_if { |student| student.id == id }
-    end
-  
-    def get_student_short_count
-      @data.length
-    end
+  end
+
+  def sort_by_last_name_initials
+    @data.sort_by! { |student| [student.last_name, student.first_name, student.surname] }
+  end
+
+  def add_student(student)
+    max_id = @data.map { |s| s.id.to_i }.max
+    student.id = (max_id + 1).to_s
+    @data << student
+  end
+
+  def replace_student(id, student)
+    student.id = id
+    @data.map! { |s| s.id == id ? student : s }
+  end
+
+  def delete_student(id)
+    @data.delete_if { |student| student.id == id }
+  end
+
+  def get_student_short_count
+    @data.length
+  end
 end
 
-class Students_list_JSON < Convert
+class Students_list_JSON < Data_list
   def initialize(file_path)
     @file_path = file_path
     @students = []
@@ -135,59 +135,59 @@ class Students_list_JSON < Convert
   end
 end
 
-class Students_list_YAML < Convert
-    def initialize(file_path = "students_ex.yml")
-        super()
-        @file_path = file_path
-        @students = []
-        if File.exists?(file_path)
-        @students = YAML.load_file(file_path)
-        end
-    end
+class Students_list_YAML < Data_list
+  def initialize(file_path = "students_ex.yml")
+      super()
+      @file_path = file_path
+      @students = []
+      if File.exists?(file_path)
+      @students = YAML.load_file(file_path)
+      end
+  end
 
-    def add(student)
-        new_id = (@students.map { |s| s.id.to_i }.max || 0) + 1
-        student.id = new_id.to_s
-        @students << student
-        write_to_file
-    end
+  def add(student)
+      new_id = (@students.map { |s| s.id.to_i }.max || 0) + 1
+      student.id = new_id.to_s
+      @students << student
+      write_to_file
+  end
 
-    def delete(student_id)
-        student = get(student_id)
-        @students.delete(student)
-        write_to_file
-    end
-    
-    def convert_read(file_content)
-      YAML.safe_load(file_content).map{ |h| h.transform_keys(&:to_sym)}
-    end
+  def delete(student_id)
+      student = get(student_id)
+      @students.delete(student)
+      write_to_file
+  end
+  
+  def convert_read(file_content)
+    YAML.safe_load(file_content).map{ |h| h.transform_keys(&:to_sym)}
+  end
 
-    def convert_read(file_content)
-      YAML.safe_load(file_content).map{ |h| h.transform_keys(&:to_sym)}
-    end
+  def convert_read(file_content)
+    YAML.safe_load(file_content).map{ |h| h.transform_keys(&:to_sym)}
+  end
 
-    def replace(student)
-        delete(student.id)
-        add(student)
-    end
+  def replace(student)
+      delete(student.id)
+      add(student)
+  end
 
-    def sort_by_full_name
-        @students.sort_by! { |s| [s.surname, s.first_name, s.patronymic] }
-        write_to_file
-    end
+  def sort_by_full_name
+      @students.sort_by! { |s| [s.surname, s.first_name, s.patronymic] }
+      write_to_file
+  end
 
-    def get(student_id)
-        @students.find { |s| s.id == student_id }
-    end
+  def get(student_id)
+      @students.find { |s| s.id == student_id }
+  end
 
-    def get_k_n_student_short_list(n, k, data_list = nil)
-        students_data = YAML.load_file(filename)
-        student_list = students_data.map { |data| Student_short.new(id: data.id, surname: "#{data.surname} #{data.first_name[0]}.") }
-        short_list = student_list.drop(n - 1).take(k)
-        Data_list.new(short_list)
-    end
-    
-    def get_student_short_count
-        @students.count
-    end
+  def get_k_n_student_short_list(n, k, data_list = nil)
+      students_data = YAML.load_file(filename)
+      student_list = students_data.map { |data| Student_short.new(id: data.id, surname: "#{data.surname} #{data.first_name[0]}.") }
+      short_list = student_list.drop(n - 1).take(k)
+      Data_list.new(short_list)
+  end
+  
+  def get_student_short_count
+      @students.count
+  end
 end

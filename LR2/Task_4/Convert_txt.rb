@@ -21,5 +21,6 @@ class ConverterTxt < Converter
 	def convert_write(hash_students)
 		string_arr = hash_students.map do |hash|
 			hash.map{|k,v| "#{k}:#{v}"}.join(',')
-		end.join("\n")
+		end
 	end
+end

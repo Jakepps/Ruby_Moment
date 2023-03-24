@@ -30,6 +30,26 @@
 
 #.class: fill=#FEDCC4 title=bold
 #.module: fill=#D9E6FF title=bold
+[<class> Student |
+  @id; @last_name; @name; @surname; @contacts; @group |
+  +initialize(id, last_name, name, surname, contacts); +to_s; +initials; +set_contacts(contacts); +get_info; +get_contact; +phone=(value); +validate; +validate_git; +validate_contact; +initialize(id, name, surname, github, contact, group) |
+  self.from_string(string); self.valid_phone?(phone); self.valid_telegram?(telegram); self.valid_email?(email); self.valid_git?(git); self.read_from_txt(file_path); self.write_to_txt(file_path, students)
+]
+[<class> Student_short |
+  @surname_initials; @contact |
+  +initialize(id, surname_initials, git, contact); +to_s; +id=(_); +surname_initials=(_); +git=(_); +contact=(_) |
+  self.from_student(student)
+]
+[<class> StudentBase |
+  @id; @name; @surname; @github; @contact |
+  +initialize(id, name, surname, github, contact); +info |
+  
+]
+[<class> StudentShort |
+   |
+  +initialize(id, name, surname, github, contact) |
+  
+]
 [<class> Data_list |
   @data; @frozen; @selected |
   +initialize(elements); +&rbrack;&lbrack;(index); +each(block); +size; +reverse!; +select(number); +get_selected; +get_names; +get_data; +each |
@@ -70,9 +90,81 @@
   +step_one; +step_two |
   
 ]
+[<class> Convert |
+   |
+  +convert_read(file_content); +convert_write(hash_students) |
+  
+]
+[<class> ConverterJSON |
+   |
+  +convert_read(file_content); +convert_write(hash_students) |
+  
+]
+[<class> ConverterTxt |
+   |
+  +convert_read(data); +convert_write(hash_students) |
+  
+]
+[<class> ConverterYAML |
+   |
+  +convert_read(file_content); +convert_write(hash_students) |
+  
+]
+[<class> Students_list_txt |
+   |
+  +convert_read(data); +convert_write(hash_students); +get_student_by_id(id); +get_k_n_student_short_list(k, n, data_list, student_f); +sort_by_last_name_initials; +add_student(student); +replace_student(id, student); +delete_student(id); +get_student_short_count |
+  
+]
+[<class> Students_list_JSON |
+  @file_path; @students |
+  +initialize(file_path); +get_k_n_student_short_list(k, n, data_list); +convert_write(hash_students); +convert_read(file_content); +add_student(student); +replace_student(student_id, student); +delete_student(student_id); +get_student(student_id); +sort_by_surname_initials; +get_student_short_count |
+  
+]
+[<class> Students_list_YAML |
+  @file_path; @students |
+  +initialize(file_path); +add(student); +delete(student_id); +convert_read(file_content); +convert_read(file_content); +replace(student); +sort_by_full_name; +get(student_id); +get_k_n_student_short_list(n, k, data_list); +get_student_short_count |
+  
+]
+[<class> Shipping |
+  @strategy |
+  +initialize(strategy); +shipping_cost(weight) |
+  
+]
+[<class> ShippingStrategy |
+   |
+  +calculate(weight) |
+  
+]
+[<class> FlatRateShipping |
+   |
+  +calculate(weight) |
+  
+]
+[<class> FreeShipping |
+   |
+  +calculate(weight) |
+  
+]
+[<class> WeightBasedShipping |
+   |
+  +calculate(weight) |
+  
+]
+[Student_short] inherits <:- [Student]
+[Student] inherits <:- [StudentBase]
+[StudentShort] inherits <:- [StudentBase]
 [Data_List_Student_Short] inherits <:- [Data_List_2]
 [ConcreteClass] inherits <:- [AbstractClass]
 [Subclass] inherits <:- [AbstractClass]
+[ConverterJSON] inherits <:- [Converter]
+[ConverterTxt] inherits <:- [Converter]
+[ConverterYAML] inherits <:- [Converter]
+[Students_list_txt] inherits <:- [Data_list]
+[Students_list_JSON] inherits <:- [Data_list]
+[Students_list_YAML] inherits <:- [Data_list]
+[FlatRateShipping] inherits <:- [ShippingStrategy]
+[FreeShipping] inherits <:- [ShippingStrategy]
+[WeightBasedShipping] inherits <:- [ShippingStrategy]
 `;
       nomnoml.draw(canvas, source);
   </script>
