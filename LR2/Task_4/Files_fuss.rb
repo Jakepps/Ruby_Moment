@@ -23,7 +23,7 @@ class Students_list_txt < Data_list
   def convert_write(hash_students)
     string_arr = hash_students.map do |hash|
       hash.map{|k,v| "#{k}:#{v}"}.join(',')
-    end.join("\n")
+    end
   end
 
   def get_student_by_id(id)
@@ -114,7 +114,6 @@ class Students_list_JSON < Data_list
 
   def get_student(student_id)
     student = @students.find { |s| s[:id] == student_id }
-    student[:student] if student
   end
 
   def sort_by_surname_initials
@@ -146,16 +145,16 @@ class Students_list_YAML < Data_list
   end
 
   def add(student)
-      new_id = (@students.map { |s| s.id.to_i }.max || 0) + 1
-      student.id = new_id.to_s
-      @students << student
-      write_to_file
+    new_id = (@students.map { |s| s.id.to_i }.max || 0) + 1
+    student.id = new_id.to_s
+    @students << student
+    write_to_file
   end
 
   def delete(student_id)
-      student = get(student_id)
-      @students.delete(student)
-      write_to_file
+    student = get(student_id)
+    @students.delete(student)
+    write_to_file
   end
   
   def convert_read(file_content)
@@ -167,27 +166,27 @@ class Students_list_YAML < Data_list
   end
 
   def replace(student)
-      delete(student.id)
-      add(student)
+    delete(student.id)
+    add(student)
   end
 
   def sort_by_full_name
-      @students.sort_by! { |s| [s.surname, s.first_name, s.patronymic] }
-      write_to_file
+    @students.sort_by! { |s| [s.surname, s.first_name, s.patronymic] }
+    write_to_file
   end
 
   def get(student_id)
-      @students.find { |s| s.id == student_id }
+    @students.find { |s| s.id == student_id }
   end
 
   def get_k_n_student_short_list(n, k, data_list = nil)
-      students_data = YAML.load_file(filename)
-      student_list = students_data.map { |data| Student_short.new(id: data.id, surname: "#{data.surname} #{data.first_name[0]}.") }
-      short_list = student_list.drop(n - 1).take(k)
-      Data_list.new(short_list)
+    students_data = YAML.load_file(filename)
+    student_list = students_data.map { |data| Student_short.new(id: data.id, surname: "#{data.surname} #{data.first_name[0]}.") }
+    short_list = student_list.drop(n - 1).take(k)
+    Data_list.new(short_list)
   end
   
   def get_student_short_count
-      @students.count
+    @students.count
   end
 end
