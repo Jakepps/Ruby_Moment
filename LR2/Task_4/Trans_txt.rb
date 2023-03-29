@@ -1,9 +1,9 @@
-require_relative 'Converter'
+require_relative 'data_transformer_base'
 
-class ConverterTxt < Converter
+class ConverterTxt < DataTransformerBase
 	public_class_method :new
 
-	def convert_read(data)
+	def str_to_hash_list(data)
 		result = []
 		file_content = data.split("\n")
 		file_content.each do |line|
@@ -18,7 +18,7 @@ class ConverterTxt < Converter
 		result
 	end
 
-	def convert_write(hash_students)
+	def hash_list_to_str(hash_students)
 		string_arr = hash_students.map do |hash|
 			hash.map{|k,v| "#{k}:#{v}"}.join(',')
 		end

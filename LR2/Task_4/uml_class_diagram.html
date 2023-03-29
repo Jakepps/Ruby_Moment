@@ -30,39 +30,9 @@
 
 #.class: fill=#FEDCC4 title=bold
 #.module: fill=#D9E6FF title=bold
-[<class> Convert |
+[<class> Filefuss |
    |
-  +convert_read(file_content); +convert_write(hash_students) |
-  
-]
-[<class> ConverterJSON |
-   |
-  +convert_read(file_content); +convert_write(hash_students) |
-  
-]
-[<class> ConverterTxt |
-   |
-  +convert_read(data); +convert_write(hash_students) |
-  
-]
-[<class> ConverterYAML |
-   |
-  +convert_read(file_content); +convert_write(hash_students) |
-  
-]
-[<class> Students_list_txt |
-   |
-  +convert_read(data); +convert_write(hash_students); +get_student_by_id(id); +get_k_n_student_short_list(k, n, data_list, student_f); +sort_by_last_name_initials; +add_student(student); +replace_student(id, student); +delete_student(id); +get_student_short_count |
-  
-]
-[<class> Students_list_JSON |
-  @file_path; @students |
-  +initialize(file_path); +get_k_n_student_short_list(k, n, data_list); +convert_write(hash_students); +convert_read(file_content); +add_student(student); +replace_student(student_id, student); +delete_student(student_id); +get_student(student_id); +sort_by_surname_initials; +get_student_short_count |
-  
-]
-[<class> Students_list_YAML |
-  @file_path; @students |
-  +initialize(file_path); +add(student); +delete(student_id); +convert_read(file_content); +convert_read(file_content); +replace(student); +sort_by_full_name; +get(student_id); +get_k_n_student_short_list(n, k, data_list); +get_student_short_count |
+  +initialize(data_transformer); +load_from_file(file_path); +save_to_file(file_path); +student_by_id(student_id); +paginated_short_students(page, count, existing_data_list); +sorted; +add_student(student); +replace_student(student_id, student); +remove_student(student_id); +student_count |
   
 ]
 [<class> Shipping |
@@ -90,15 +60,32 @@
   +calculate(weight) |
   
 ]
-[ConverterJSON] inherits <:- [Converter]
-[ConverterTxt] inherits <:- [Converter]
-[ConverterYAML] inherits <:- [Converter]
-[Students_list_txt] inherits <:- [Data_list]
-[Students_list_JSON] inherits <:- [Data_list]
-[Students_list_YAML] inherits <:- [Data_list]
+[<class> DataTransformerBase |
+   |
+  #str_to_hash_list(str); #hash_list_to_str(hash_list) |
+  
+]
+[<class> DataTransformerJSON |
+   |
+  +str_to_hash_list(str); +hash_list_to_str(hash_list) |
+  
+]
+[<class> ConverterTxt |
+   |
+  +str_to_hash_list(data); +hash_list_to_str(hash_students) |
+  
+]
+[<class> DataTransformerYAML |
+   |
+  +str_to_hash_list(str); +hash_list_to_str(hash_list) |
+  
+]
 [FlatRateShipping] inherits <:- [ShippingStrategy]
 [FreeShipping] inherits <:- [ShippingStrategy]
 [WeightBasedShipping] inherits <:- [ShippingStrategy]
+[DataTransformerJSON] inherits <:- [DataTransformerBase]
+[ConverterTxt] inherits <:- [DataTransformerBase]
+[DataTransformerYAML] inherits <:- [DataTransformerBase]
 `;
       nomnoml.draw(canvas, source);
   </script>
