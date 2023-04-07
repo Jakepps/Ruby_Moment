@@ -1,15 +1,27 @@
 require 'sqlite3'
-require_relative 'Create_seed_table.rb'
+require_relative 'Student_list_db.rb'
+require_relative 'Work_with_db.rb'
 
-db = SQLite3::Database.new('student.db')
+# Создаем объект класса Students_list_db
+students_list = Students_list_DB.new('students.db')
 
-Student.create_table(db)
-Student.seed(db)
+# Получаем студента по ID
+student1 = students_list.get_student(1)
 
-rust = Student.new({ name: 'Rustam', age: 20, gender: 'Male' })
-gir = Student.new({ name: 'Gireka', age: 21, gender: 'Male' })
-art = Student.new({ name: 'Artem', age: 19, gender: 'Male' })
+# Создаем нового студента
+new_student = Student.new(name: 'Mary', age: 22, gender: 'Female')
 
-puts rust.gender 
-puts gir.age 
-puts art.name 
+# Добавляем нового студента в список
+students_list.add_student(new_student)
+
+# Заменяем данные студента с id=2
+student2 = students_list.get_student(2)
+student2.name = 'Smith'
+students_list.replace_student(student2)
+
+# Удаляем студента с id=3
+students_list.delete_student(3)
+
+# Получаем количество студентов в списке
+num_students = students_list.count_students
+puts(num_students)

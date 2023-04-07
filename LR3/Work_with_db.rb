@@ -21,7 +21,7 @@ class Student
 
   def self.seed(db)
     db.execute <<-SQL
-      INSERT INTO student (name, age, gender) VALUES
+      INSERT INTO students (name, age, gender) VALUES
         ('John', 20, 'Male'),
         ('Jane', 21, 'Female'),
         ('Bob', 19, 'Male');
