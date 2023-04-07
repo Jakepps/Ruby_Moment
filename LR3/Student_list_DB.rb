@@ -23,11 +23,23 @@ end
 
 class Students_list_DB
   #freeze не позволяет изменять имя
-  db_name = 'students.db'.freeze
+  DB_NAME  = 'students.db'.freeze
 
-  def initialize(db_name)
-    @db = SQLite3::Database.new(db_name)
+  def initialize
+    @db = SQLite3::Database.new(DB_NAME)
+    # create_table
   end
+
+  # def create_table
+  #   @db.execute <<-SQL
+  #     CREATE TABLE IF NOT EXISTS students (
+  #       id INTEGER PRIMARY KEY AUTOINCREMENT,
+  #       name TEXT,
+  #       age INTEGER,
+  #       gender TEXT
+  #     );
+  #   SQL
+  # end
 
   def close
     @db.close
