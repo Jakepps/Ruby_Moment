@@ -80,6 +80,6 @@ class Students_list_DB
 
   def count_students
     row = @db.get_first_row("SELECT COUNT(*) FROM students")
-    return row[0]
+    row[0]
   end
 end
