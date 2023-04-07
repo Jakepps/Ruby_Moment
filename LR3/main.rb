@@ -1,5 +1,5 @@
 require 'sqlite3'
-require_relative 'Student_list_db.rb'
+require_relative 'Student_list_DB.rb'
 require_relative 'Work_with_db.rb'
 
 # Создаем объект класса Students_list_db
