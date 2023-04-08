@@ -30,6 +30,7 @@ class Students_list_DB
     # create_table
   end
 
+  #метод класса
   # def create_table
   #   @db.execute <<-SQL
   #     CREATE TABLE IF NOT EXISTS students (
