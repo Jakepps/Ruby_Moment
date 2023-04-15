@@ -2,7 +2,7 @@ require 'sqlite3'
 
 class Student_short
   attr_accessor :id, :name
-  
+
   def initialize(id, name)
     @id = id
     @name = name
@@ -11,11 +11,11 @@ end
 
 class Data_list
   attr_accessor :list
-  
+
   def initialize(list = [])
     @list = list
   end
-  
+
   def add(student_short)
     @list << student_short
   end
@@ -64,6 +64,7 @@ class Students_list_DB
     end
     data_list
   end
+
 
   def add_student(student)
     id = @db.last_insert_row_id + 1

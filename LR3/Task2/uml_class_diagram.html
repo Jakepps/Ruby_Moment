@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagram</title>
+</head>
+<body>
+  <script src="https://unpkg.com/graphre/dist/graphre.js"></script>
+  <script src="https://unpkg.com/nomnoml/dist/nomnoml.js"></script>
+
+  <canvas id="target-canvas"></canvas>
+  <script>
+      var canvas = document.getElementById('target-canvas');
+      var source = `#direction: right
+#zoom: 0.9
+
+#font: Roboto
+#fontSize: 20
+#leading: 2
+#padding: 12
+
+#fillArrows: true
+#arrowSize: 0.5
+#spacing: 130
+
+#lineWidth: 1.5
+#stroke: #33322E
+
+#.class: fill=#FEDCC4 title=bold
+#.module: fill=#D9E6FF title=bold
+[<class> Celsius |
+  @temp |
+  +initialize(temp); +get_temp |
+  
+]
+[<class> FahrenheitAdapter |
+  @celsius |
+  +initialize(celsius); +get_temp |
+  
+]
+[<class> Student |
+  @id; @name; @age; @email |
+  +initialize(id, name, age, email) |
+  
+]
+[<class> StudentShort |
+  @id; @name |
+  +initialize(id, name) |
+  
+]
+[<class> StudentList |
+  @source; @students |
+  +initialize; +create_table; +adapter; +add_student(student); +replace_student(student); +delete_student(id); +get_k_n_student_short_list(k, n); +get_student_short_count; +save_students(students) |
+  
+]
+`;
+      nomnoml.draw(canvas, source);
+  </script>
+</body>
+</html>
