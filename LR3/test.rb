@@ -11,8 +11,8 @@ class MainWindow
         }
         tab_item('Вкладка 2') { }
         tab_item('Вкладка 3') { }
+        }
       }
-    }
   end
 end
 
