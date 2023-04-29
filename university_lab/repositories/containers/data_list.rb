@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
-require './university_lab/repositories/containers/data_table'
+require './LabStudents/repositories/containers/data_table'
 
 class DataList
+  # Это "абстрактный" класс
   private_class_method :new
 
   attr_writer :objects
 
+  # Конструктор, принимает массив любых объектов
   def initialize(objects)
     self.objects = objects
     @listeners = []
@@ -24,6 +26,7 @@ class DataList
     @listeners.each { |lst| lst.on_datalist_changed(data_table) }
   end
 
+  # Выбрать элемент по номеру
   def select_element(number)
     self.selected_num = number < objects.size ? number : nil
   end

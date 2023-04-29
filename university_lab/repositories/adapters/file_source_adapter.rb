@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'data_source_adapter'
-
-class FileSourceAdapter < DataSourceAdapter
+class FileSourceAdapter
   def initialize(data_transformer, file_path)
     @file_path = file_path
     @file_source = FileDataSource.new(data_transformer)
