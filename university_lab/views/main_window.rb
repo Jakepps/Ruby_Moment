@@ -11,13 +11,14 @@ class MainWindow
   end
 
   def create
-    window('University', 900, 200) {
+    window('Универ', 900, 200) {
       tab {
-        tab_item('Students') {
+        tab_item('Студенты') {
           @view_tab_students.create
         }
-        tab_item('Tab 2') { }
-        tab_item('Tab 3') { }
+
+        tab_item('Вкладка 2') { }
+        tab_item('Вкладка 3') { }
       }
     }
   end

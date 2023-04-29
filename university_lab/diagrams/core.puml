@@ -193,8 +193,7 @@ class FileDataSource {
     +data_transformer=(DataTransformerBase)
 }
 
-
-class DBSourceAdapter  {
+class DBSourceAdapter {
     -db: DBDataSource
     --
     +initialize()

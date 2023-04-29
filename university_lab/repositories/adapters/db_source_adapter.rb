@@ -1,12 +1,11 @@
 # frozen_string_literal: true
 
-require './university_lab/repositories/data_sources/db_data_source'
-require './university_lab/models/student'
-require './university_lab/models/student_short'
-require './university_lab/repositories/containers/data_list_student_short'
-require_relative 'data_source_adapter'
+require './LabStudents/repositories/data_sources/db_data_source'
+require './LabStudents/models/student'
+require './LabStudents/models/student_short'
+require './LabStudents/repositories/containers/data_list_student_short'
 
-class DBSourceAdapter < DataSourceAdapter
+class DBSourceAdapter
   def initialize
     @db = DBDataSource.instance
   end

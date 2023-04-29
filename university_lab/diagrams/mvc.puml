@@ -8,6 +8,14 @@ DataList ..> DataTable
 TabStudentsController o-- DataListStudentShort
 TabStudentsController o-- StudentRepository
 
+StudentInputForm *-u- StudentInputFormControllerCreate
+StudentInputFormControllerCreate *-- StudentInputForm
+StudentInputFormControllerCreate o-- StudentRepository
+
+StudentInputForm *-u- StudentInputFormControllerEdit
+StudentInputFormControllerEdit *-- StudentInputForm
+StudentInputFormControllerEdit o-- StudentRepository
+
 class MainWindow {
     --
     +create(): Window
@@ -29,9 +37,52 @@ class TabStudentsController {
     -view: TabStudents
     -data_list: DataListStudentShort
     --
+    +initialize(view)
     +show_view()
+    +show_modal_add()
+    +show_modal_edit(Integer, Integer)
     +refresh_data(Integer, Integer)
     +on_view_created()
+    -on_db_conn_error()
+}
+
+class StudentInputForm {
+    -controller: StudentInputFormController
+    -existing_student: Student
+    -entries: Hash
+    --
+    +initialize(controller, Student = nil)
+    +create(): Window
+    +on_create()
+    +set_value(Symbol, Object)
+    +make_readonly(*Symbol)
+    +close()
+}
+
+class StudentInputFormControllerCreate {
+    -view: StudentInputForm
+    -parent_controller
+    -student_rep: StudentRepository
+    --
+    +initialize(parent_controller)
+    +set_view(view)
+    +on_view_created()
+    +process_fields(Hash)
+    -on_db_conn_error()
+}
+
+class StudentInputFormControllerEdit {
+    -view: StudentInputForm
+    -parent_controller
+    -student_rep: StudentRepository
+    -existing_student_id: Integer
+    --
+    +initialize(parent_controller)
+    +set_view(view)
+    +on_view_created()
+    +process_fields(Hash)
+    +populate_fields()
+    -on_db_conn_error()
 }
 
 class DataTable {

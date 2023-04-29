@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 require 'glimmer-dsl-libui'
-require './university_lab/controllers/tab_students_controller'
+require './LabStudents/controllers/tab_students_controller'
+require './LabStudents/views/student_input_form'
 
 class TabStudents
   include Glimmer
@@ -22,7 +23,9 @@ class TabStudents
   # Метод наблюдателя datalist
   def on_datalist_changed(new_table)
     arr = new_table.to_2d_array
-    arr.map { |row| row[3] = [row[3][:value], contact_color(row[3][:type])] }
+    arr.map do |row|
+      row[3] = [row[3][:value], contact_color(row[3][:type])] unless row[3].nil?
+    end
     @table.model_array = arr
   end
 
@@ -58,13 +61,13 @@ class TabStudents
           }
 
           @filters = {}
-          fields = [[:git, 'Git'], [:email, 'Email'], [:phone, 'Phone'], [:telegram, 'Telegram']]
+          fields = [[:git, 'Гит'], [:email, 'Почта'], [:phone, 'Телефон'], [:telegram, 'Телеграм']]
 
           fields.each do |field|
             @filters[field[0]] = {}
 
             @filters[field[0]][:combobox] = combobox {
-              label "#{field[1]}"
+              label "#{field[1]} имеется?"
               items ['Не важно', 'Есть', 'Нет']
               selected 0
 
@@ -79,7 +82,7 @@ class TabStudents
             }
 
             @filters[field[0]][:entry] = entry {
-
+              label field[1]
               read_only true
             }
           end
@@ -92,14 +95,15 @@ class TabStudents
           table_editable: false,
           filter: lambda do |row_hash, query|
             utf8_query = query.force_encoding("utf-8")
-            row_hash['ФИО'].include?(utf8_query)
+            row_hash['Фамилия И. О'].include?(utf8_query)
           end,
           table_columns: {
             '#' => :text,
-            'ФИО' => :text,
-            'Git' => :text,
+            'Фамилия И. О' => :text,
+            'Гит' => :text,
             'Контакт' => :text_color
-          }
+          },
+          per_page: STUDENTS_PER_PAGE
         )
 
         @pages = horizontal_box {
@@ -130,10 +134,29 @@ class TabStudents
       vertical_box {
         stretchy false
 
-        button('Add') { stretchy false }
-        button('Edit') { stretchy false }
-        button('Delete') { stretchy false }
-        button('Update') {
+        button('Добавить') {
+          stretchy false
+
+          on_clicked {
+            @controller.show_modal_add
+          }
+        }
+        button('Изменить') {
+          stretchy false
+
+          on_clicked {
+            @controller.show_modal_edit(@current_page, STUDENTS_PER_PAGE, @table.selection) unless @table.selection.nil?
+          }
+        }
+        button('Удалить') {
+          stretchy false
+
+          on_clicked {
+            @controller.delete_selected(@current_page, STUDENTS_PER_PAGE, @table.selection) unless @table.selection.nil?
+            @controller.refresh_data(@current_page, STUDENTS_PER_PAGE)
+          }
+        }
+        button('Обновить') {
           stretchy false
 
           on_clicked {

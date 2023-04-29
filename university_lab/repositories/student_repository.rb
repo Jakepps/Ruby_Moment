@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative 'adapters/data_source_adapter'
 class StudentRepository
   def initialize(data_source_adapter)
     @data_source_adapter = data_source_adapter
