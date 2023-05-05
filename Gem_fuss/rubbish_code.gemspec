@@ -1,6 +1,6 @@
 Gem::Specification.new do |spec|
   spec.name        = 'rubbish_code'
-  spec.version     = '0.1.0'
+  spec.version     = '0.1.1'
   spec.authors     = ['Jake Epps']
   spec.email       = 'nullexp.team@gmail.com'
   spec.summary     = 'Student App'
