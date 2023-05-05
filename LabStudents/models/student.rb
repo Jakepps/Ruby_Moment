@@ -8,6 +8,8 @@ class Student < StudentBase
   public_class_method :new
 
   def self.from_hash(hash)
+    #создает копию переданного хэша. при Изменении объекта, на который ссылается новый хэш, и это изменение также будет отражено в оригинальном хэше
+    hash = hash.dup
     raise ArgumentError, 'Fields required: fist_name, last_name, father_name' unless hash.key?(:first_name) && hash.key?(:last_name) && hash.key?(:father_name)
 
     first_name = hash.delete(:first_name)
