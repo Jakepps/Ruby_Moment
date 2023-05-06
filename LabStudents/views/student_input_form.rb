@@ -3,6 +3,7 @@
 require 'glimmer-dsl-libui'
 require './LabStudents/controllers/student_input_form/student_input_form_controller_create'
 require './LabStudents/models/student_base'
+require './LabStudents/controllers/tab_students_controller'
 require 'win32api'
 
 class StudentInputForm
@@ -43,6 +44,7 @@ class StudentInputForm
             values.transform_values! { |v| v.empty? ? nil : v}
 
             @controller.process_fields(values)
+            #@controller.refresh_data(1, 1)
           }
         }
       }

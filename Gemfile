@@ -8,3 +8,5 @@ gem 'win32api'
 gem "minitest"
 gem 'rubocop', group: 'development'
 gem 'rubbish_code', '~> 0.1.1'
+gem 'sinatra', '~> 3.0', '>= 3.0.6'
+#gem 'thin', '~> 1.8', '>= 1.8.2'

@@ -25,6 +25,8 @@ GEM
     matrix (0.4.2)
     method_source (1.0.0)
     minitest (5.18.0)
+    mustermann (3.0.0)
+      ruby2_keywords (~> 0.0.1)
     mysql2 (0.5.5)
     os (1.1.4)
     parallel (1.22.1)
@@ -33,6 +35,9 @@ GEM
     perfect-shape (1.0.7)
       equalizer (>= 0.0.11, < 1.1.0)
       matrix (>= 0.4.2, < 1.1.0)
+    rack (2.2.7)
+    rack-protection (3.0.6)
+      rack
     rainbow (3.1.1)
     regexp_parser (2.7.0)
     rexml (3.2.5)
@@ -52,8 +57,15 @@ GEM
     rubocop-ast (1.28.0)
       parser (>= 3.2.1.0)
     ruby-progressbar (1.13.0)
+    ruby2_keywords (0.0.5)
+    sinatra (3.0.6)
+      mustermann (~> 3.0)
+      rack (~> 2.2, >= 2.2.4)
+      rack-protection (= 3.0.6)
+      tilt (~> 2.0)
     super_module (1.4.1)
       method_source (>= 0.8.2, < 1.1.0)
+    tilt (2.1.0)
     unicode-display_width (2.4.2)
     win32api (0.1.0)
 
@@ -66,6 +78,7 @@ DEPENDENCIES
   mysql2
   rubbish_code (~> 0.1.1)
   rubocop
+  sinatra (~> 3.0, >= 3.0.6)
   win32api
 
 BUNDLED WITH
