@@ -1,0 +1,234 @@
+@startuml
+'https://plantuml.com/class-diagram
+
+DataList ..> DataTable
+FileDataSource *-- DataTransformerBase
+StudentRepository ..> DataListStudentShort
+DataListStudentShort o-- ShortStudent
+DBSourceAdapter o-- DBDataSource
+FileSourceAdapter o-- FileDataSource
+StudentRepository *-- DBSourceAdapter
+StudentRepository *-- FileSourceAdapter
+
+abstract class StudentBase {
+    -id: Integer
+    -phone: String
+    -telegram: String
+    -email: String
+    -git: String
+    --
+    +{static}valid_name?(String): Boolean
+    +{static}valid_phone?(String): Boolean
+    +{static}valid_profile_name?(String): Boolean
+    +{static}valid_email?(String): Boolean
+    -initialize(Hash)
+    +short_contact(): String
+    +has_contacts?(): Boolean
+    +has_git?(): Boolean
+    +valid?(): Boolean
+    .. Геттеры ..
+    +id(): Integer
+    +git(): String
+    #phone(): String
+    #telegram(): String
+    #email(): String
+    .. Сеттеры ..
+    #id=(Integer)
+    #git=(String)
+    #phone=(String)
+    #telegram=(String)
+    #email=(String)
+}
+
+class Student extends StudentBase {
+    -last_name: String
+    -first_name: String
+    -father_name: String
+    --
+    +{static}from_hash(Hash): Student
+    +{static}from_json_str(String): Student
+    +initialize(String, String, String, Hash)
+    +set_contacts(Hash)
+    +last_name_and_initials(): String
+    +short_info(): String
+    +to_s(): String
+    +to_hash(): Hash
+    +to_json_str(): String
+    .. Геттеры ..
+    +phone(): String
+    +telegram(): String
+    +email(): String
+    +last_name(): String
+    +first_name(): String
+    +father_name(): String
+    .. Сеттеры ..
+    +id=(Integer)
+    +git=(String)
+    +phone=(String)
+    +telegram=(String)
+    +email=(String)
+    +last_name=(String)
+    +first_name=(String)
+    +father_name=(String)
+}
+
+class ShortStudent extends StudentBase {
+    -last_name_and_initials: String
+    -contact: Hash
+    --
+    +{static}from_student(Student): ShortStudent
+    +initialize(Integer, String)
+    +to_s(): String
+    .. Геттеры ..
+    +last_name_and_initials(): String
+    +contact(): Hash
+    .. Сеттеры ..
+    -last_name_and_initials=(String)
+    -contact=(Hash)
+}
+
+class DataTable {
+    -table: Array
+    -rows_count: Integer
+    -cols_count: Integer
+    --
+    +initialize(Array)
+    +get_item(Integer, Integer): Object
+    +to_2d_array(): Array
+    .. Геттеры ..
+    +rows_count(): Integer
+    +cols_count(): Integer
+    -table(): Array
+    .. Сеттеры ..
+    -rows_count=(Integer)
+    -cols_count=(Integer)
+    -table=(Array)
+}
+
+abstract class DataList {
+    -objects: Array
+    -selected_num: Integer
+    -listeners: Array
+    --
+    -initialize(Array)
+    +select_element(Integer)
+    +data_table(): DataTable
+    +selected_id(): Integer
+    +replace_objects(Array)
+    +add_listener(Object)
+    +remove_listener(Object)
+    +notify()
+    #column_names(): Array
+    #table_fields(Object): Array
+    .. Геттеры ..
+    -selected_num(): Integer
+    -objects(): Array
+    .. Сеттеры ..
+    -selected_num=(Integer)
+    +objects=(Array)
+}
+
+class DataListStudentShort extends DataList {
+    --
+    +initialize(Array)
+    +column_names(): Array
+    #table_fields(StudentShort): Array
+}
+
+class DataTransformerBase {
+    --
+    -initialize()
+    #str_to_hash_list(String)
+    #hash_list_to_str(Array)
+}
+
+class DataTransformerJSON extends DataTransformerBase {
+    --
+    +initialize()
+    +str_to_hash_list(String): Array
+    +hash_list_to_str(Array): String
+}
+
+class DataTransformerYAML extends DataTransformerBase {
+    --
+    +initialize()
+    +str_to_hash_list(String): Array
+    +hash_list_to_str(Array): String
+}
+
+class DBDataSource {
+    -{static}instance_mutex: Mutex
+    -{static}instance: DBDataSource
+    -client: Mysql2::Client
+    --
+    +{static}instance(): DBDataSource
+    -initialize()
+    +prepare_exec(String, *Object): Mysql2::Result
+    +query(String): Mysql2::Result
+}
+
+class FileDataSource {
+    -students: Array
+    -seq_id: Integer
+    -data_transformer: DataTransformerBase
+    --
+    +initialize()
+    +load_from_file(String)
+    +save_to_file(String)
+    +student_by_id(Integer): Student
+    +paginated_short_students(Integer, Integer, DataList=nil): DataList
+    +sorted(): Array
+    +add_student(Student): Integer
+    +replace_student(Integer, Student)
+    +remove_student(Integer)
+    +student_count(): Integer
+    -update_seq_id()
+    .. Геттеры ..
+    -students(): Array
+    -seq_id(): Integer
+    -data_transformer(): DataTransformerBase
+    .. Сеттеры ..
+    -students=(Array)
+    -seq_id=(Integer)
+    +data_transformer=(DataTransformerBase)
+}
+
+class DBSourceAdapter {
+    -db: DBDataSource
+    --
+    +initialize()
+    +student_by_id(Integer): Student
+    +paginated_short_students(Integer, Integer, DataList=nil): DataList
+    +add_student(Student): Integer
+    +replace_student(Integer, Student)
+    +remove_student(Integer)
+    +student_count(): Integer
+    -student_fields(Student): Array
+}
+
+class FileSourceAdapter {
+    -file_path: String
+    -file_source: FileDataSource
+    --
+    +initialize(DataTransformerBase, String)
+    +student_by_id(Integer): Student
+    +paginated_short_students(Integer, Integer, DataList=nil): DataList
+    +add_student(Student): Integer
+    +replace_student(Integer, Student)
+    +remove_student(Integer)
+    +student_count(): Integer
+}
+
+class StudentRepository {
+    -data_source_adapter
+    --
+    +initialize(data_source_adapter)
+    +student_by_id(Integer): Student
+    +paginated_short_students(Integer, Integer, DataList=nil): DataList
+    +add_student(Student): Integer
+    +replace_student(Integer, Student)
+    +remove_student(Integer)
+    +student_count(): Integer
+}
+
+@enduml
