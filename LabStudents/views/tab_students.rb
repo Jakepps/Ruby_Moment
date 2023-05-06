@@ -7,6 +7,8 @@ require './LabStudents/views/student_input_form'
 class TabStudents
   include Glimmer
 
+  STUDENTS_PER_PAGE = 20
+
   def initialize
     @controller = TabStudentsController.new(self)
     @current_page = 1
