@@ -15,6 +15,10 @@ class StudentInputFormControllerEdit
     LoggerHolder.instance.debug('StudentInputFormControllerEdit: view set')
   end
 
+  def refresh
+    @parent_controller.refresh_data(1, 20)
+  end
+
   def on_view_created
     begin
       @student_rep = StudentRepository.new(DBSourceAdapter.new)

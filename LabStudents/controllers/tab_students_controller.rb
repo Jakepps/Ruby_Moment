@@ -20,12 +20,12 @@ class TabStudentsController
   end
 
   def on_view_created
-    #begin
+    begin
       @student_rep = StudentRepository.new(DBSourceAdapter.new)
       LoggerHolder.instance.debug('TabStudentsController: created student repository')
-    # rescue Mysql2::Error::ConnectionError => e
-    #   on_db_conn_error(e)
-    # end
+    rescue Mysql2::Error::ConnectionError => e
+       on_db_conn_error(e)
+    end
   end
 
   def show_modal_add

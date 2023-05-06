@@ -44,7 +44,7 @@ class StudentInputForm
             values.transform_values! { |v| v.empty? ? nil : v}
 
             @controller.process_fields(values)
-            #@controller.refresh_data(1, 1)
+            @controller.refresh()
           }
         }
       }
