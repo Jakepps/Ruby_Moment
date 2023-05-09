@@ -45,7 +45,7 @@ GEM
     regexp_parser (2.7.0)
     rexml (3.2.5)
     rouge (3.30.0)
-    rubbish_code (1.0.0)
+    rubbish_code (1.1.2)
       win32api
     rubocop (1.50.1)
       json (~> 2.3)
@@ -84,7 +84,7 @@ DEPENDENCIES
   mc_delta
   minitest
   mysql2
-  rubbish_code (~> 1.0)
+  rubbish_code (~> 1.1, >= 1.1.2)
   rubocop
   sinatra (~> 3.0, >= 3.0.6)
   thin (~> 1.8, >= 1.8.2)

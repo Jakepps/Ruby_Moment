@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-require './LabStudents/views/main_window'
-require './LabStudents/repositories/student_repository'
-require './LabStudents/repositories/adapters/db_source_adapter'
-require './LabStudents/repositories/containers/data_list_student_short'
-require './LabStudents/views/student_input_form'
-require './LabStudents/controllers/student_input_form/student_input_form_controller_create'
-require './LabStudents/controllers/student_input_form/student_input_form_controller_edit'
-require './LabStudents/util/logger_holder'
+require 'source/views/main_window'
+require 'source/repositories/student_repository'
+require 'source/repositories/adapters/db_source_adapter'
+require 'source/repositories/containers/data_list_student_short'
+require 'source/views/student_input_form'
+require 'source/controllers/student_input_form/student_input_form_controller_create'
+require 'source/controllers/student_input_form/student_input_form_controller_edit'
+require 'source/util/logger_holder'
 require 'win32api'
 
 class TabStudentsController

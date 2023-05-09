@@ -1,5 +1,5 @@
 # frozen_string_literal: true
-require './LabStudents/util/logger_holder'
+require 'source/util/logger_holder'
 require 'win32api'
 
 class StudentInputFormControllerCreate
