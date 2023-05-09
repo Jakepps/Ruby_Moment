@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'views/main_window'
-require './LabStudents/util/logger_holder'
+require 'rubbish_code'
 
 LoggerHolder.instance.level = Logger::DEBUG
 MainWindow.new.create.show
