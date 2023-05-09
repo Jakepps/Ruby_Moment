@@ -25,7 +25,6 @@
     <orderEntry type="library" scope="PROVIDED" name="json (v2.6.3, ruby-3.2.2-p53) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="libui (v0.1.2.pre, ruby-3.2.2-p53) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="matrix (v0.4.2, ruby-3.2.2-p53) [gem]" level="application" />
-    <orderEntry type="library" scope="PROVIDED" name="mc_delta (v1.0.0, ruby-3.2.2-p53) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="method_source (v1.0.0, ruby-3.2.2-p53) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="minitest (v5.18.0, ruby-3.2.2-p53) [gem]" level="application" />
     <orderEntry type="library" scope="PROVIDED" name="mustermann (v3.0.0, ruby-3.2.2-p53) [gem]" level="application" />
