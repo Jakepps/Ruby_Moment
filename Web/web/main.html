@@ -1,0 +1,233 @@
+<html>
+    <head>
+        <style>
+            table.tbl td {
+                border: 1px solid black;
+                padding: 5px;
+                margin: 0px;
+                min-width: 100px;
+                height: 32px;
+            }
+
+            table.tbl tr {
+                padding: 5px;
+                margin: 5px;
+            }
+
+            .tbl {
+                overflow-x: scroll;
+                display:block;
+            }
+            .bt {
+                font-size: 15px;
+                padding: 5px 10px;
+                background-color: #5117d6;
+                color: #fff;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+                margin: 10px;
+            }
+
+            .bt:hover {
+                background-color: #22b91d;
+            }
+        </style>
+    </head>
+    <body style="margin: 0px;">
+        <div style="position: relative; height: 100%;">
+            <div style="display: flex; justify-content: flex-start; width: 100%;">
+
+                <div>
+                    <div style="display: flex; margin: 16px; position: relative;">
+                        <div style="width: 256px">
+
+                        </div>
+                        <div style="display: flex; width: 100%; text-align:center;margin-bottom: 20px;">
+                            <button class = "bt" onclick="last_page()">Назад</button>
+                            <div id="page_counter" style="text-align: center; width: 350px">
+                                1 из 5
+                            </div>
+                            <button class = "bt" onclick="next_page()">Вперед</button>
+                        </div>
+
+                        <div style="width: 256px">
+
+                        </div>
+                    </div>
+                    <div style="display: flex; text-align:center;">
+                        <div style="width: 20px; margin: auto;">
+
+                        </div>
+
+                        <div style="width: 1px; background-color: black; margin: auto;"></div>
+
+                        <table class="tbl" style="margin: 0px; margin: auto;">
+                            <thead style="margin: 0px; padding: 0px;">
+                                <tr style="margin: 0px; padding: 0px;">
+                                    <td>ID</td>
+                                    <td>Фамилия</td>
+                                    <td>Имя</td>
+                                    <td>Отчество</td>
+                                    <td>GitHub</td>
+                                    <td>Телефон</td>
+                                    <td>Почта</td>
+                                    <td>Телеграм</td>
+                                </td>
+                                </tr>
+                            </thead>
+                            <tbody id="table_body">
+
+                            </tbody>
+                        </table>
+                        <div style="width: 1px; background-color: black; margin: auto;"></div>
+
+                        <div style="width: 256px; margin: auto; display: flex; flex-direction: column; margin: 8px;">
+                            <button class = "bt" id="add" onclick="add_student()" >Добавить</button>
+                            <button class = "bt" id="edit" onclick="edit_student()" >Изменить</button>
+                            <button class = "bt" id="delete" onclick="delete_student()" >Удалить</button>
+                            <button class = "bt" id="update" >Обновить</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            let table = document.getElementById('table_body')
+
+            let selected_item = null
+
+            let add = document.getElementById('add')
+            let del = document.getElementById('delete')
+            let update = document.getElementById('update')
+            let edit = document.getElementById('edit')
+
+            function add_student() {
+                var http = new XMLHttpRequest();
+
+                http.open('POST', 'set_editing_idnull', false);
+                http.send();
+                window.location.href = '/add'
+            }
+
+            function edit_student() {
+                let id = document.getElementById('row_' + selected_item.toString() + "_column_0").textContent
+                var http = new XMLHttpRequest();
+
+                http.open('POST', 'set_editing_id' + id, false);
+                http.send();
+
+                window.location.href = '/add'
+            }
+
+            function generate_table_body() {
+                for(i = 0; i < 10; i++) {
+                    let row = document.createElement('tr')
+                    if (i == selected_item) {
+                        row.style.backgroundColor = 'Red'
+                    }
+                    row.id = "row_" + i.toString()
+                    row.onclick = (((x) => {
+                        return () => {
+                            let column = document.getElementById('row_' + x.toString() + "_column_1")
+                            if (column.textContent != "") {
+                                selected_item = x
+                                update_request()
+                            } else {
+                                selected_item = null
+                                update_request()
+                            }
+
+                        }
+                    }))(i)
+
+                    for(j = 0; j < 8; j++) {
+                        let column = document.createElement('td')
+                        column.id = "row_" + i.toString() + "_column_" + j.toString()
+                        row.appendChild(column)
+                    }
+                    table.appendChild(row)
+                }
+            }
+
+            function clear_table() {
+                table.innerHTML = ''
+                generate_table_body()
+            }
+
+            function delete_student() {
+                let column = document.getElementById('row_' + selected_item.toString() + "_column_0")
+
+                var http = new XMLHttpRequest();
+                http.open('POST', 'delete' + column.textContent, false);
+                http.send()
+
+                update_request()
+            }
+
+            function update_table(students) {
+                clear_table()
+                for(i = 0; i < students.length; i++) {
+                    let attributes = [
+                        students[i]['id'],
+                        students[i]['lastname'],
+                        students[i]['firstname'],
+                        students[i]['patronymic'],
+                        students[i]['git'],
+                        students[i]['phone'],
+                        students[i]['email'],
+                        students[i]['telegram']
+                    ]
+
+                    for(j = 0; j < 8; j++) {
+                        let column = document.getElementById('row_' + i.toString() + '_column_' + j.toString())
+                        column.textContent = attributes[j]
+                    }
+                }
+
+                if (selected_item != null) {
+                    del.disabled = false
+                    edit.disabled = false
+                } else {
+                    del.disabled = true
+                    edit.disabled = true
+                }
+            }
+
+            function next_page() {
+                var http = new XMLHttpRequest();
+                http.open('POST', 'next_page', false);
+                http.send()
+                update_request()
+            }
+
+            function last_page() {
+                var http = new XMLHttpRequest();
+                http.open('POST', 'last_page', false);
+                http.send()
+                update_request()
+            }
+
+            function update_request() {
+                var http = new XMLHttpRequest();
+                http.open('POST', 'students', false);
+                http.send()
+                let json = JSON.parse(http.responseText)
+                update_table(json)
+
+                var http = new XMLHttpRequest();
+                http.open('GET', 'get_page', false);
+                http.send()
+
+                var http2 = new XMLHttpRequest();
+                http2.open('GET', 'get_pages_count', false);
+                http2.send()
+
+                document.getElementById('page_counter').textContent = 'Страница ' + http.responseText + ' из ' + http2.responseText
+            }
+
+            generate_table_body()
+            update_request()
+        </script>
+    </body>
+</html>

@@ -1,5 +1,5 @@
-require 'sinatra'
-require 'thin'
+# frozen_string_literal: true
+
 require 'glimmer-dsl-libui'
 require_relative 'tab_students'
 
@@ -16,7 +16,7 @@ class MainWindow
         tab_item('Студенты') {
           @view_tab_students.create
         }
-        
+
         tab_item('Вкладка 2') { }
         tab_item('Вкладка 3') { }
       }

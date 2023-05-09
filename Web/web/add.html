@@ -1,0 +1,168 @@
+<html>
+    <style>
+        .text {
+            font-size: 20px;
+            font-weight: bold;
+            color: #000000;
+        }
+
+        .txbox {
+            font-size: 16px;
+            padding: 7px;
+            border: 1px solid #050505;
+        }
+
+        .bt {
+            font-size: 15px;
+            padding: 5px 10px;
+            background-color: #5117d6;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 16px;
+        }
+
+        .bt:hover {
+            background-color: #22b91d;
+        }
+    </style>
+
+    <body style="display: flex; flex-direction: column; width: 256px;">
+        <label class="text" for="user_name">Фамилия</label>
+        <input class ="txbox" type="text" id="lastname">
+
+        <label class="text" for="user_name">Имя</label>
+        <input class ="txbox" type="text" id="firstname">
+
+        <label class="text" for="user_name">Отчество</label>
+        <input class ="txbox"  type="text" id="patronymic">
+
+        <label class="text" for="user_name">GitHub</label>
+        <input class ="txbox"  type="text" id="git">
+
+        <label class="text" for="user_name">Телефон</label>
+        <input class ="txbox"  type="text" id="phone">
+
+        <label class="text" for="user_name">Почта</label>
+        <input class ="txbox"  type="text" id="email">
+
+        <label class="text" for="user_name">Телеграм</label>
+        <input class ="txbox"  type="text" id="telegram">
+
+        <button  class ="bt" onclick="check_button()">Готово</button>
+    </body>
+
+    <script>
+        let is_edit_mode = false
+        let id = null
+
+        function check_button() {
+            if (document.getElementById('firstname').value == "") {
+                alert("Имя не введено")
+                return
+            }
+
+            if (document.getElementById('lastname').value == "") {
+                alert("Фамилия не введена")
+                return
+            }
+
+            if (document.getElementById('patronymic').value == "") {
+                alert("Отчество не введено")
+                return
+            }
+
+            if (document.getElementById('git').value != "" && document.getElementById('git').value.match(/@\w*/) == null) {
+                alert("Неверно введен GitHub")
+                return
+            }
+
+            if (document.getElementById('email').value != "" && document.getElementById('email').value.match(/\w*@\w*.\w{2,3}/) == null) {
+                alert("Неверно введена почта")
+                return
+            }
+
+            if (document.getElementById('phone').value != "" && document.getElementById('phone').value.match(/\d-\d{3}-\d{3}-\d{2}-\d{2}/) == null) {
+                alert("Неверно введен номер телефона")
+                return
+            }
+
+            if (document.getElementById('telegram').value != "" && document.getElementById('telegram').value.match(/@\w*/) == null) {
+                alert("Неверно введена телеграм")
+                return
+            }
+
+            if (document.getElementById('git').value == "" && document.getElementById('phone').value == "" && document.getElementById('email').value == "" && document.getElementById('telegram').value == "") {
+                alert("Отсутствует контакт")
+                return
+            }
+
+            add_student()
+        }
+
+        function get_editing_student() {
+            var http = new XMLHttpRequest();
+            http.open('GET', 'get_editing_id', false);
+            http.send()
+
+            id = http.responseText
+
+
+            if (id != "null") {
+                is_edit_mode = true
+
+                http.open('POST', 'editing' + id, false);
+                http.send()
+
+                let student = JSON.parse(http.responseText)
+
+                document.getElementById('firstname').value = student[0]["firstname"]
+                document.getElementById('lastname').value = student[0]["lastname"]
+                document.getElementById('patronymic').value = student[0]["patronymic"]
+                document.getElementById('git').value = student[0]["git"]
+                document.getElementById('email').value = student[0]["email"]
+                document.getElementById('phone').value = student[0]["phone"]
+                document.getElementById('telegram').value = student[0]["telegram"]
+            }
+        }
+
+        function add_student() {
+            let json = {
+                "firstname": document.getElementById('firstname').value,
+                "lastname": document.getElementById('lastname').value,
+                "patronymic": document.getElementById('patronymic').value
+            }
+
+            if (id != null) {
+                json['id'] = id
+            }
+            if (document.getElementById('git').value != "") {
+                json['git'] = document.getElementById('git').value
+            }
+            if (document.getElementById('email').value != "") {
+                json['email'] = document.getElementById('email').value
+            }
+            if (document.getElementById('phone').value != "") {
+                json['phone'] = document.getElementById('phone').value
+            }
+            if (document.getElementById('telegram').value != "") {
+                json['telegram'] = document.getElementById('telegram').value
+            }
+
+            var http = new XMLHttpRequest();
+
+            if (is_edit_mode) {
+                http.open('GET', "edit" + JSON.stringify(json), false);
+                http.send()
+            } else {
+                http.open('GET', "insert" + JSON.stringify(json), false);
+                http.send()
+            }
+
+            window.location.replace("/");
+        }
+
+        get_editing_student()
+    </script>
+</html>

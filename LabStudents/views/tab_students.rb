@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 require 'glimmer-dsl-libui'
-require 'rubbish_code'
+require 'source/controllers/tab_students_controller'
+require 'source/views/student_input_form'
 
 class TabStudents
   include Glimmer
