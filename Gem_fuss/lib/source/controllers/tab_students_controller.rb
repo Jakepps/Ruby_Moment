@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'source/views/main_window'
+require './LabStudents/views/main_window'
 require 'source/repositories/student_repository'
 require 'source/repositories/adapters/db_source_adapter'
 require 'source/repositories/containers/data_list_student_short'
-require 'source/views/student_input_form'
+require './LabStudents/views/student_input_form'
 require 'source/controllers/student_input_form/student_input_form_controller_create'
 require 'source/controllers/student_input_form/student_input_form_controller_edit'
 require 'source/util/logger_holder'
